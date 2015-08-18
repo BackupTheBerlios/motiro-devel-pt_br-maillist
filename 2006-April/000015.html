@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BMotiro-devel-pt%3D5Fbr%5D_Javascript_-_M%3F%3D%20%3D%3FISO-8859-1%3FQ%3Fostrando_apenas_altera%3DE7%3DF5es_selecionadas%3F%3D&In-Reply-To=%3Cc30322d0604031409s1f772186q38169370e7918375%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000014.html">
+   <LINK REL="Next"  HREF="000017.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas</H1>
+    <B>Marcos Silva Pereira</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BMotiro-devel-pt%3D5Fbr%5D_Javascript_-_M%3F%3D%20%3D%3FISO-8859-1%3FQ%3Fostrando_apenas_altera%3DE7%3DF5es_selecionadas%3F%3D&In-Reply-To=%3Cc30322d0604031409s1f772186q38169370e7918375%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas">marcos.silva at gmail.com
+       </A><BR>
+    <I>Mon Apr  3 23:09:20 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000014.html">[Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+        <LI>Next message: <A HREF="000017.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#15">[ date ]</a>
+              <a href="thread.html#15">[ thread ]</a>
+              <a href="subject.html#15">[ subject ]</a>
+              <a href="author.html#15">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hum, n&#227;o entendi exatamente, mas deixa eu mostrar um exemplinho que talvez
+seja o que vc quer:
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;
+   &quot;<A HREF="http://www.w3.org/TR/html4/loose.dtd">http://www.w3.org/TR/html4/loose.dtd</A>&quot;&gt;
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Motiro - JavaScript&lt;/title&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            function showHide(divId) {
+                var div = document.getElementById(divId);
+                if(div) {
+                    div.style.display = div.style.display == 'none' ?
+'block' : 'none';
+                }
+            }
+        &lt;/script&gt;
+    &lt;/head&gt;
+
+    &lt;h4 onclick=&quot;javascript:showHide('div1');&quot;&gt;Titulo 1&lt;/h4&gt;
+    &lt;div id=&quot;div1&quot; style=&quot;display:none;&quot;&gt;&lt;p&gt;Texto a ser mostrado 1&lt;/p&gt;&lt;/div&gt;
+
+    &lt;h4 onclick=&quot;javascript:showHide('div2');&quot;&gt;Titulo 2&lt;/h4&gt;
+    &lt;div id=&quot;div2&quot;&gt;&lt;p&gt;Texto a ser mostrado 2&lt;/p&gt;&lt;/div&gt;
+
+&lt;/html&gt;
+
+Enfim, a fun&#231;&#227;o JavaScript apenas altera o style do objeto. Note que posso
+alterar qualquer atributo de um elemento qualquer via JavaScript, j&#225; que
+tenho total acesso a arvore DOM gerada. Fazer esse tipo de coisa no Firefox
+&#233; at&#233; bem mais simples, por causa do DOM Inspector. Uma coisa razoavel para
+se fazer, &#233; dar ID's para as propriedades mais importante, facilita um
+bocado recuperar exatamente aquele elemento. Se n&#227;o fosse pelo id setado na
+div, precisaria fazer alguns passos a mais.
+
+valeuz...
+
+On 4/3/06, Thiago Arrais &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">thiago.arrais at gmail.com</A> &gt; wrote:
+&gt;<i>
+</I>&gt;<i> Pessoal,
+</I>&gt;<i>
+</I>&gt;<i> Estou pensando em dar uma guaribada na p&#225;gina de detalhamento das
+</I>&gt;<i> revis&#245;es subversion. Quero que, ao inv&#233;s de todas as altera&#231;&#245;es serem
+</I>&gt;<i> mostradas, apenas uma altera&#231;&#227;o de cada vez fosse mostrada. O usu&#225;rio
+</I>&gt;<i> poderia escolher qual delas pelos links que j&#225; existem hoje.
+</I>&gt;<i>
+</I>&gt;<i> Acho que isto pode ser resolvido com Javascript (certo?). N&#227;o estou
+</I>&gt;<i> querendo usar AJAX para evitar um aumento no n&#250;mero de requisi&#231;&#245;es.
+</I>&gt;<i> Sei que preciso substituir um galho ou dois da &#225;rvore HTML
+</I>&gt;<i> dinamicamente, mas meus conhecimentos de Javascript s&#227;o muito
+</I>&gt;<i> limitados (para n&#227;o dizer inexistentes).
+</I>&gt;<i>
+</I>&gt;<i> Alguma dica? Preciso realmente de Javascript pra isso? Tem outro jeito de
+</I>&gt;<i> fazer?
+</I>&gt;<i>
+</I>&gt;<i> Abra&#231;os,
+</I>&gt;<i>
+</I>&gt;<i> Thiago Arrais
+</I>&gt;<i> --
+</I>&gt;<i> Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+</I>&gt;<i> Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+</I>&gt;<i> tecnologia em geral
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Motiro-devel-pt_br mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">Motiro-devel-pt_br at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br</A>
+</I>&gt;<i>
+</I>
+
+
+--
+Marcos Silva Pereira
+recife - pe
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>
+<A HREF="http://blastemica.blogspot.com">http://blastemica.blogspot.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060403/95cb1377/attachment.html">https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060403/95cb1377/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000014.html">[Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+	<LI>Next message: <A HREF="000017.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#15">[ date ]</a>
+              <a href="thread.html#15">[ thread ]</a>
+              <a href="subject.html#15">[ subject ]</a>
+              <a href="author.html#15">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

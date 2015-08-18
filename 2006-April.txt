@@ -1,0 +1,1097 @@
+From thiago.arrais at gmail.com  Mon Apr  3 22:19:42 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 3 Apr 2006 17:19:42 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Javascript_-_Mostrando_apenas_altera=E7=F5es_selecionadas?=
+Message-ID: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+
+Pessoal,
+
+Estou pensando em dar uma guaribada na p?gina de detalhamento das
+revis?es subversion. Quero que, ao inv?s de todas as altera??es serem
+mostradas, apenas uma altera??o de cada vez fosse mostrada. O usu?rio
+poderia escolher qual delas pelos links que j? existem hoje.
+
+Acho que isto pode ser resolvido com Javascript (certo?). N?o estou
+querendo usar AJAX para evitar um aumento no n?mero de requisi??es.
+Sei que preciso substituir um galho ou dois da ?rvore HTML
+dinamicamente, mas meus conhecimentos de Javascript s?o muito
+limitados (para n?o dizer inexistentes).
+
+Alguma dica? Preciso realmente de Javascript pra isso? Tem outro jeito de fazer?
+
+Abra?os,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Mon Apr  3 23:09:20 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Mon, 3 Apr 2006 18:09:20 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Javascript_-_M?= =?ISO-8859-1?Q?ostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+Message-ID: <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+
+Hum, n?o entendi exatamente, mas deixa eu mostrar um exemplinho que talvez
+seja o que vc quer:
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>Motiro - JavaScript</title>
+        <script type="text/javascript">
+            function showHide(divId) {
+                var div = document.getElementById(divId);
+                if(div) {
+                    div.style.display = div.style.display == 'none' ?
+'block' : 'none';
+                }
+            }
+        </script>
+    </head>
+
+    <h4 onclick="javascript:showHide('div1');">Titulo 1</h4>
+    <div id="div1" style="display:none;"><p>Texto a ser mostrado 1</p></div>
+
+    <h4 onclick="javascript:showHide('div2');">Titulo 2</h4>
+    <div id="div2"><p>Texto a ser mostrado 2</p></div>
+
+</html>
+
+Enfim, a fun??o JavaScript apenas altera o style do objeto. Note que posso
+alterar qualquer atributo de um elemento qualquer via JavaScript, j? que
+tenho total acesso a arvore DOM gerada. Fazer esse tipo de coisa no Firefox
+? at? bem mais simples, por causa do DOM Inspector. Uma coisa razoavel para
+se fazer, ? dar ID's para as propriedades mais importante, facilita um
+bocado recuperar exatamente aquele elemento. Se n?o fosse pelo id setado na
+div, precisaria fazer alguns passos a mais.
+
+valeuz...
+
+On 4/3/06, Thiago Arrais <thiago.arrais at gmail.com > wrote:
+>
+> Pessoal,
+>
+> Estou pensando em dar uma guaribada na p?gina de detalhamento das
+> revis?es subversion. Quero que, ao inv?s de todas as altera??es serem
+> mostradas, apenas uma altera??o de cada vez fosse mostrada. O usu?rio
+> poderia escolher qual delas pelos links que j? existem hoje.
+>
+> Acho que isto pode ser resolvido com Javascript (certo?). N?o estou
+> querendo usar AJAX para evitar um aumento no n?mero de requisi??es.
+> Sei que preciso substituir um galho ou dois da ?rvore HTML
+> dinamicamente, mas meus conhecimentos de Javascript s?o muito
+> limitados (para n?o dizer inexistentes).
+>
+> Alguma dica? Preciso realmente de Javascript pra isso? Tem outro jeito de
+> fazer?
+>
+> Abra?os,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060403/95cb1377/attachment.html>
+
+From marcos.silva at gmail.com  Mon Apr  3 23:13:48 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Mon, 3 Apr 2006 18:13:48 -0300
+Subject: [Motiro-devel-pt_br] Mocks para o ActiveRecord.
+Message-ID: <c30322d0604031413h568d5b27x90a3e185476902e1@mail.gmail.com>
+
+Uma das boas praticas para testes unitarios ? que eles rodem um bocado
+independentes do ambiente, isso para evitar situa??es nas quais os testes
+passam na maquina de um desenvolvedor, mas, por diferen?as no ambiente, n?o
+passam na de outro. Ontem enquanto fu?ava no codigo do Motiro, por um
+instante parei o servi?o do MySQL, n?o lembro exatamente agora porque, e,
+ent?o, quando fui rodar os testes, tomei um bocado de letras e barras
+vermelhos na cara. O Active Record reclamou que n?o conseguia estabelecer
+conex?o com o banco. Ok, reiniciei o servi?o e tudo ficou verde.
+
+Mas, a? fiquei pensando, n?o seria o caso de usar mocks para o active record
+e evitar esse tipo de problema? Ou estou for?ando a barra, o que acham?
+
+valeuz...
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060403/f22ad463/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Apr  4 01:33:34 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 3 Apr 2006 19:33:34 -0400
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Javascript_-_M?= =?ISO-8859-1?Q?ostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+Message-ID: <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+
+On 4/3/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Enfim, a fun??o JavaScript apenas altera o style do objeto.
+
+Mas como fazer para substituir um galho inteiro da ?rvore? No exemplo,
+como fa?o para literalmente substituir o div1 pelo div2? ? isso que
+acontece quando uma requisi??o AJAX ? processada, certo?
+
+Bem, acho que o que voc? mostrou j? resolve o problema. O resto ? mais
+curiosidade minha mesmo.
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Tue Apr  4 01:41:30 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 3 Apr 2006 19:41:30 -0400
+Subject: [Motiro-devel-pt_br] Mocks para o ActiveRecord.
+In-Reply-To: <c30322d0604031413h568d5b27x90a3e185476902e1@mail.gmail.com>
+References: <c30322d0604031413h568d5b27x90a3e185476902e1@mail.gmail.com>
+Message-ID: <e163e2f50604031641r53c39722vc9e43a1748265c33@mail.gmail.com>
+
+On 4/3/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Mas, a? fiquei pensando, n?o seria o caso de usar mocks para o active record
+> e evitar esse tipo de problema? Ou estou for?ando a barra, o que acham?
+
+Seria ?timo. Tamb?m n?o gosto muito dos testes indo bater no banco de
+dados toda vez. Fica muito lento.
+
+Mas isso precisa ser melhor pesquisado. Talvez se substituirmos a
+conex?o do ActiveRecord por uma conex?o falsa, possamos conseguir o
+que queremos. Mas de um modo geral eu acho o ActiveRecord muito
+dependente da base de dados para conseguirmos algo sem grandes
+esfor?os. Como exemplo, os m?todos correspondentes aos campos das
+tabelas s?o gerados nos bastidores por ele, isso exigiria que a
+conex?o falsa fosse capaz de responder a essa requisi??o.
+
+N?o que n?o valha a pena pesquisar, claro.
+
+Para resolver o problema da performance, podemos tentar rodar a base
+de dados em um espa?o do sistemas de arquivos mapeado em mem?ria e n?o
+em disco.
+
+J? que est?s mexendo, tentaste rodar os testes selenium? O selenium
+est? meio verde ainda e ?s vezes tenho uns problemas de concorr?ncia.
+Mas ? massa ver o navegador andando sozinho.
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Tue Apr  4 17:05:21 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Tue, 4 Apr 2006 12:05:21 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_J?= =?ISO-8859-1?Q?avascript_-_Mostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+Message-ID: <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+
+> Mas como fazer para substituir um galho inteiro da ?rvore? No exemplo,
+> como fa?o para literalmente substituir o div1 pelo div2? ? isso que
+> acontece quando uma requisi??o AJAX ? processada, certo?
+
+
+Substituir uma div por outra que _n?o_ existe e que depende de dados do
+servidor, vai precisar de ajax, ou ent?o usar recursos menos "naturais" como
+um iframe e por a? vai. O que Ajax faz ? requisitar ao servidor os dados e
+montar a arvore DOM para inseri-la em alguma parte da pagina.
+
+valeuz...
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/16154891/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Apr  4 18:06:26 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 4 Apr 2006 13:06:26 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_J?= =?ISO-8859-1?Q?avascript_-_Mostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+Message-ID: <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+
+On 4/4/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Substituir uma div por outra que _n?o_ existe
+
+> O que Ajax faz ? requisitar ao servidor os dados e
+> montar a arvore DOM para inseri-la em alguma parte da pagina.
+
+Substituir uma div por outra n?o seria o mesmo de inserir uma arvore
+DOM em uma parte da pagina? Estamos especulando aqui (j? que nosso
+problema deve ser resolvido usando o style.display), mas n?o seria
+poss?vel ter algo do tipo:
+
+<head>
+<script language='arraiscript'>
+substitua o div com id='guarda_lugar' pelo n? html abaixo
+"<div id='guarda_lugar'><p>Este par?grafo aparece do nada</p></div>"
+</script>
+</head>
+<body>
+<p>Este paragrafo ? fixo</p>
+<div id="guarda_lugar" />
+</body>
+
+N?o coloquei o gatilho (botao/link/qquer coisa) para disparar o
+script, mas acho que d? pra entender. N?o ? isso que acontece quando ?
+feita uma requisi??o AJAX, com a diferen?a de que os dados viriam do
+servidor?
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Tue Apr  4 19:49:24 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Tue, 4 Apr 2006 14:49:24 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Mo?= =?ISO-8859-1?Q?tiro-devel-pt=5Fbr]_Re:_[Motiro-de?= =?ISO-8859-1?Q?vel-pt=5Fbr]_Javascript_-_Mostrand?= =?ISO-8859-1?Q?o_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+	 <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+Message-ID: <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+
+Sim, d? para fazer isso sem problemas. Assim:
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>Motiro - JavaScript</title>
+        <script type="text/javascript">
+            function alteraConteudo(divId) {
+                var div = document.getElementById(divId);
+                if(div) {
+                   div.innerHTML = "<p>Eis o novo texto da div<\/p>";
+                }
+            }
+        </script>
+    </head>
+
+    <h4 onclick="javascript:alteraConteudo('div1');">Titulo 1</h4>
+    <div id="div1"><p>Texto a ser mostrado 1</p></div>
+
+</html>
+
+D? para sair adicionando childs na arvore DOM da div tambem, mas acho o
+innerHTML mais pratico, ao menos para esse caso.
+
+valeuz...
+
+On 4/4/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+>
+> On 4/4/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> > Substituir uma div por outra que _n?o_ existe
+>
+> > O que Ajax faz ? requisitar ao servidor os dados e
+> > montar a arvore DOM para inseri-la em alguma parte da pagina.
+>
+> Substituir uma div por outra n?o seria o mesmo de inserir uma arvore
+> DOM em uma parte da pagina? Estamos especulando aqui (j? que nosso
+> problema deve ser resolvido usando o style.display), mas n?o seria
+> poss?vel ter algo do tipo:
+>
+> <head>
+> <script language='arraiscript'>
+> substitua o div com id='guarda_lugar' pelo n? html abaixo
+> "<div id='guarda_lugar'><p>Este par?grafo aparece do nada</p></div>"
+> </script>
+> </head>
+> <body>
+> <p>Este paragrafo ? fixo</p>
+> <div id="guarda_lugar" />
+> </body>
+>
+> N?o coloquei o gatilho (botao/link/qquer coisa) para disparar o
+> script, mas acho que d? pra entender. N?o ? isso que acontece quando ?
+> feita uma requisi??o AJAX, com a diferen?a de que os dados viriam do
+> servidor?
+>
+> Abra?o,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/2e9a73aa/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Apr  4 19:54:33 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 4 Apr 2006 14:54:33 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Mo?= =?ISO-8859-1?Q?tiro-devel-pt=5Fbr]_Re:_[Motiro-de?= =?ISO-8859-1?Q?vel-pt=5Fbr]_Javascript_-_Mostrand?= =?ISO-8859-1?Q?o_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+	 <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+	 <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+Message-ID: <e163e2f50604041054g52ff65bbtca3affac4deede69@mail.gmail.com>
+
+On 4/4/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Sim, d? para fazer isso sem problemas. Assim:
+
+Beleza ent?o. Mais uma pergunta: como fazer isso com Rails sem usar
+AJAX e sem escrever o Javascript diretamente.
+
+Ser? que a nova vers?o 1.1 ultra-ninja consegue isso? Ser? que a 1.0
+j? conseguia? Ser? que estou fazendo perguntas demais?
+
+Abra?os,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Tue Apr  4 20:38:21 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Tue, 4 Apr 2006 15:38:21 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-d?= =?ISO-8859-1?Q?evel-pt=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_R?= =?ISO-8859-1?Q?e:_[Motiro-devel-pt=5Fbr]_Javascript_-_M?= =?ISO-8859-1?Q?ostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <e163e2f50604041054g52ff65bbtca3affac4deede69@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+	 <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+	 <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+	 <e163e2f50604041054g52ff65bbtca3affac4deede69@mail.gmail.com>
+Message-ID: <c30322d0604041138m42e04884w8dc2e580211d4939@mail.gmail.com>
+
+>
+> Beleza ent?o. Mais uma pergunta: como fazer isso com Rails sem usar
+> AJAX e sem escrever o Javascript diretamente.
+
+
+Desconhe?o. Sinceramente, acho esse recurso ? bastante especifico para o
+rails possuir. Mas, nunca se sabe. :-D
+
+Ser? que a nova vers?o 1.1 ultra-ninja consegue isso?
+
+
+N?o sei, ainda n?o li bem sobre o RJS.
+
+Ser? que a 1.0 j? conseguia?
+
+
+S? mestre google sabe.
+
+Ser? que estou fazendo perguntas demais?
+
+
+Ainda bem que n?o precisei dizer. :-D
+
+valeuz...
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/c2f9e5eb/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Apr  4 20:59:27 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 4 Apr 2006 15:59:27 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Javascript_-_M?= =?ISO-8859-1?Q?ostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <c30322d0604041138m42e04884w8dc2e580211d4939@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+	 <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+	 <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+	 <e163e2f50604041054g52ff65bbtca3affac4deede69@mail.gmail.com>
+	 <c30322d0604041138m42e04884w8dc2e580211d4939@mail.gmail.com>
+Message-ID: <e163e2f50604041159p277989bejb931a3a57e0f42fb@mail.gmail.com>
+
+Acho que vou com a primeira sugest?o mesmo.
+
+Devo publicar um pequeno planejamento para o pr?ximo release hoje ?
+noite. Isto do rep?rter subversion esconder o detalhamento dos
+arquivos deve entrar na pr?xima vers?o, junto com outras melhorias em
+termos de interface com o usu?rio. Estou querendo dar uma perfumada no
+Motiro para este release 0.3 (que n?o sei nem se vai ser 0.3, posso
+resolver chamar de 0.2.1).
+
+Podemos fazer uma reuni?o para discutir o direcionamento do projeto
+ainda esse semana se voc?s quiserem. Ultimamente estive pensando muito
+no aspecto de comunidade da coisa. Talvez mais conte?do adicionado ou
+controlado por usu?rios seja uma boa. Estou falando de coisas como
+tags e sistemas de votacao. Mas ainda estou com um p? atr?s antes de
+implementar estas coisas por causa do tamanho limitado da nossa
+comunidade. Por?m, se a coisa for moleza de se fazer, podemos adotar
+uma postura mais coloca-l?-pra-ver-no-que-d?.
+
+Abra?os,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From livarcocc at gmail.com  Tue Apr  4 22:52:52 2006
+From: livarcocc at gmail.com (Livar Cunha)
+Date: Tue, 4 Apr 2006 17:52:52 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_J?= =?ISO-8859-1?Q?avascript_-_Mostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <e163e2f50604041159p277989bejb931a3a57e0f42fb@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+	 <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+	 <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+	 <e163e2f50604041054g52ff65bbtca3affac4deede69@mail.gmail.com>
+	 <c30322d0604041138m42e04884w8dc2e580211d4939@mail.gmail.com>
+	 <e163e2f50604041159p277989bejb931a3a57e0f42fb@mail.gmail.com>
+Message-ID: <18ed3fc70604041352r277f0078l6534d53039d29f87@mail.gmail.com>
+
+Sobre essa quest?o de esconder o detalhe e tal... tem algum problema em usar
+ajax??
+
+Se n?o tiver, pode usar slidedow, o c?digo ? o abaixo
+
+<p><a href="#" onclick="new Effect.SlideDown('source'); return
+false;">View source</a></p>
+<pre id="source" style="display:none;"><code>
+# view
+Just a little test:
+&lt;%= text_field_with_auto_complete :contact, :name %&gt;
+
+# controller
+auto_complete_for :contact, :name
+</code></pre>
+
+no caso tudo que est? dentro do pre aparece e some da p?gina.
+Isso usa uma tecnologia de scripts ajax que j? vem em rails,
+script.aculo.us procurem no google e v?o na p?gina de demo,
+l? tem um link, view source que ? exatamente esse recurso,
+v? se ? isso que tu queres thiago.
+
+
+
+
+On 4/4/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+>
+> Acho que vou com a primeira sugest?o mesmo.
+>
+> Devo publicar um pequeno planejamento para o pr?ximo release hoje ?
+> noite. Isto do rep?rter subversion esconder o detalhamento dos
+> arquivos deve entrar na pr?xima vers?o, junto com outras melhorias em
+> termos de interface com o usu?rio. Estou querendo dar uma perfumada no
+> Motiro para este release 0.3 (que n?o sei nem se vai ser 0.3, posso
+> resolver chamar de 0.2.1).
+>
+> Podemos fazer uma reuni?o para discutir o direcionamento do projeto
+> ainda esse semana se voc?s quiserem. Ultimamente estive pensando muito
+> no aspecto de comunidade da coisa. Talvez mais conte?do adicionado ou
+> controlado por usu?rios seja uma boa. Estou falando de coisas como
+> tags e sistemas de votacao. Mas ainda estou com um p? atr?s antes de
+> implementar estas coisas por causa do tamanho limitado da nossa
+> comunidade. Por?m, se a coisa for moleza de se fazer, podemos adotar
+> uma postura mais coloca-l?-pra-ver-no-que-d?.
+>
+> Abra?os,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+
+
+--
+--
+
+Livar Correia de O. C. Cunha
+Qualiti Software Process
+
+--
+livar at qualiti.com.br
+lcocc at cin.ufpe.br
+livarcocc at gmail.com
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/38840650/attachment.html>
+
+From thiago.arrais at gmail.com  Wed Apr  5 01:42:50 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 4 Apr 2006 19:42:50 -0400
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_J?= =?ISO-8859-1?Q?avascript_-_Mostrando_apenas_altera=E7=F5es_selecionadas?=
+In-Reply-To: <18ed3fc70604041352r277f0078l6534d53039d29f87@mail.gmail.com>
+References: <e163e2f50604031319h3f13f498i6569fdccc35b5404@mail.gmail.com>
+	 <c30322d0604031409s1f772186q38169370e7918375@mail.gmail.com>
+	 <e163e2f50604031633r4d176ccbwf3afe805a49b1a98@mail.gmail.com>
+	 <c30322d0604040805u2713ede3odcbbaaac02b2acdb@mail.gmail.com>
+	 <e163e2f50604040906h3e67d8d6u7f8937421f7fd835@mail.gmail.com>
+	 <c30322d0604041049k5579d010td0fe0d425a1ca0bf@mail.gmail.com>
+	 <e163e2f50604041054g52ff65bbtca3affac4deede69@mail.gmail.com>
+	 <c30322d0604041138m42e04884w8dc2e580211d4939@mail.gmail.com>
+	 <e163e2f50604041159p277989bejb931a3a57e0f42fb@mail.gmail.com>
+	 <18ed3fc70604041352r277f0078l6534d53039d29f87@mail.gmail.com>
+Message-ID: <e163e2f50604041642r491699edgfe7f9c39a4fceb3f@mail.gmail.com>
+
+On 4/4/06, Livar Cunha <livarcocc at gmail.com> wrote:
+> tem algum problema em usar
+> ajax??
+
+Tem sim, Livar. Eu preferia manter no m?nimo o n?mero de requisi??es
+de rede. Como voc?s sabes, o servidor em que o Motiro est? rodando
+atualmente n?o est? muito bem conectado e pode causar atrasos para
+carregar o conte?do remoto. Mandar a coisa toda em uma requisi??o s?
+deve sair mais r?pido.
+
+
+> Se n?o tiver, pode usar slidedow, o c?digo ? o abaixo
+
+Valeu pelo c?digo. Vou pesquisar pra ver se tem como us?-lo sem causar
+requisi??es remotas e/ou se o tempo de resposta ? toler?vel com o
+nosso servidor atual.
+
+Valeu,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Mon Apr 10 22:33:22 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 10 Apr 2006 17:33:22 -0300
+Subject: [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+In-Reply-To: <e163e2f50604101331q1abc4a44m7155b4b96e3d4d03@mail.gmail.com>
+References: <e163e2f50604101331q1abc4a44m7155b4b96e3d4d03@mail.gmail.com>
+Message-ID: <e163e2f50604101333l6c852e25gf863d408e6b0a72a@mail.gmail.com>
+
+Pessoal,
+
+Com a atualiza??o do engine Rails para a vers?o 1.1, alguns de nossos
+testes de aceita??o passaram a falhar. Mas n?o ? nada demais, j?
+chequei as causas e tudo parece bem. O problema ? que nesta ?ltima
+vers?o, a fun??o image_tag (usada para gerar os tags img nas nossas
+p?ginas) passou a incluir informa??o de timestamp, para enganar o
+caching dos browsers e facilitar a vida do desenvolvedor.
+
+O problema ? que os testes estavam confiando no formato da tag src
+para verificar a p?gina. T?nhamos (ali?s, ainda temos at? alternativa
+melhor) nos nossos scripts de teste, algo como
+
+assertElementPresent "//img[@src='/images/rss.gif']"
+
+S? que agora as imagens n?o t?m mais o atributo src='rss.gif' somente,
+ao inv?s disso temos
+
+<img src="/images/rss.gif?1142366545" />
+
+O n?mero no final vem ? do timestamp do arquivo. A p?gina ainda
+aparece normalmente, s? que os testes falham porque o atributo src nao
+est? como esperado. Queria a opini?o (e a ajuda) de voc?s quanto a
+duas solu??es que pensei.
+
+1. Reajustar os testes, modificando o localizador em XPath
+
+Ao inv?s de termos o script de teste com
+
+assertElementPresent "//img[@src='/images/rss.gif']"
+
+Ter?amos algo do tipo
+
+assertElementPresent "//img[@src.starts_wtih('/images/rss.gif')]"
+
+Traduzindo: verifique se a pagina possui um elemento img cujo atributo
+src inicia com o prefixo '/images/rss.gif'. Mas este _n?o_ ? um
+localizador XPath v?lido e/ou o Selenium n?o consegue interpret?-lo. A
+maior difculdade desta abordagem ? aprender como dizer isso em XPath.
+Tem tamb?m o problema do relaxamento do script de teste, mas acho
+dif?cil o c?digo quebrar _desse_ jeito.
+
+2. T?cnica CSS para substitui??o de texto por imagem
+
+Aqui a p?gina HTML gerada n?o vai ter nenhuma diretiva img. Ao inv?s
+disso, vamos marcar um peda?o de texto para ser substitu?do por uma
+imagem quando for aplicada a folha de estilos. Ao inv?s do c?digo html
+ser assim
+
+<img src='/images/rss.gif />
+
+Vamos ter algo parecido com isso
+
+<div class='rss-link'>RSS<span /></div>
+
+Na(s) regra(s) para tratamento da classe rss-link, escondemos o texto
+e colocamos a imagem em seu lugar. Maiores detalhes nesse links:
+
+http://wellstyled.com/css-replace-text-by-image.html
+http://www.stopdesign.com/articles/replace_text/
+
+Esta ? a abordagem que implementei (revis?o 142), n?o porque eu tenha
+avaliado e achado melhor, mas porque foi a ?nica que consegui.
+
+O que voc?s acham?
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Mon Apr 10 23:22:43 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Mon, 10 Apr 2006 18:22:43 -0300
+Subject: [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+In-Reply-To: <e163e2f50604101333l6c852e25gf863d408e6b0a72a@mail.gmail.com>
+References: <e163e2f50604101331q1abc4a44m7155b4b96e3d4d03@mail.gmail.com>
+	 <e163e2f50604101333l6c852e25gf863d408e6b0a72a@mail.gmail.com>
+Message-ID: <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+
+A segunda ? mais complicada e menos intuitiva, n?o conseguiria acompanhar
+sem uma explica??o. D? para fazer o XPath de maneira mais simples, Arrais,
+basta ajustar a consulta. D? uma olhada no exemplo abaixo para ver como
+fazer isso:
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   " http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>Motiro - XPath</title>
+        <script type="text/javascript">
+            function doXPath() {
+                var divs = akeys = document.evaluate("//img[contains(@src,
+'/images/rss.gif')]",
+                        document,
+                        null,
+                        XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
+                        null);
+
+                alert(divs.snapshotLength); // ? para mostrar 4
+            }
+        </script>
+    </head>
+    <body onload="javascript:doXPath();">
+        <img src="/images/rss.gif?321654564" />
+        <img src="/images/rss.gif?5463765676" />
+        <img src="/images/rss.gif?78678567" />
+        <img src="/images/rss.gif?890790" />
+    </body>
+</html>
+
+Ou seja, n?o tem starts_with, mas tem contains que j? deve bastar.
+
+Abra?o...
+
+On 4/10/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+>
+> Pessoal,
+>
+> Com a atualiza??o do engine Rails para a vers?o 1.1, alguns de nossos
+> testes de aceita??o passaram a falhar. Mas n?o ? nada demais, j?
+> chequei as causas e tudo parece bem. O problema ? que nesta ?ltima
+> vers?o, a fun??o image_tag (usada para gerar os tags img nas nossas
+> p?ginas) passou a incluir informa??o de timestamp, para enganar o
+> caching dos browsers e facilitar a vida do desenvolvedor.
+>
+> O problema ? que os testes estavam confiando no formato da tag src
+> para verificar a p?gina. T?nhamos (ali?s, ainda temos at? alternativa
+> melhor) nos nossos scripts de teste, algo como
+>
+> assertElementPresent "//img[@src='/images/rss.gif']"
+>
+> S? que agora as imagens n?o t?m mais o atributo src='rss.gif' somente,
+> ao inv?s disso temos
+>
+> <img src="/images/rss.gif?1142366545" />
+>
+> O n?mero no final vem ? do timestamp do arquivo. A p?gina ainda
+> aparece normalmente, s? que os testes falham porque o atributo src nao
+> est? como esperado. Queria a opini?o (e a ajuda) de voc?s quanto a
+> duas solu??es que pensei.
+>
+> 1. Reajustar os testes, modificando o localizador em XPath
+>
+> Ao inv?s de termos o script de teste com
+>
+> assertElementPresent "//img[@src='/images/rss.gif']"
+>
+> Ter?amos algo do tipo
+>
+> assertElementPresent "//img[@src.starts_wtih('/images/rss.gif')]"
+>
+> Traduzindo: verifique se a pagina possui um elemento img cujo atributo
+> src inicia com o prefixo '/images/rss.gif'. Mas este _n?o_ ? um
+> localizador XPath v?lido e/ou o Selenium n?o consegue interpret?-lo. A
+> maior difculdade desta abordagem ? aprender como dizer isso em XPath.
+> Tem tamb?m o problema do relaxamento do script de teste, mas acho
+> dif?cil o c?digo quebrar _desse_ jeito.
+>
+> 2. T?cnica CSS para substitui??o de texto por imagem
+>
+> Aqui a p?gina HTML gerada n?o vai ter nenhuma diretiva img. Ao inv?s
+> disso, vamos marcar um peda?o de texto para ser substitu?do por uma
+> imagem quando for aplicada a folha de estilos. Ao inv?s do c?digo html
+> ser assim
+>
+> <img src='/images/rss.gif />
+>
+> Vamos ter algo parecido com isso
+>
+> <div class='rss-link'>RSS<span /></div>
+>
+> Na(s) regra(s) para tratamento da classe rss-link, escondemos o texto
+> e colocamos a imagem em seu lugar. Maiores detalhes nesse links:
+>
+> http://wellstyled.com/css-replace-text-by-image.html
+> http://www.stopdesign.com/articles/replace_text/
+>
+> Esta ? a abordagem que implementei (revis?o 142), n?o porque eu tenha
+> avaliado e achado melhor, mas porque foi a ?nica que consegui.
+>
+> O que voc?s acham?
+>
+> Abra?o,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060410/d62ca582/attachment.html>
+
+From marcos.silva at gmail.com  Mon Apr 10 23:23:42 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Mon, 10 Apr 2006 18:23:42 -0300
+Subject: [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+In-Reply-To: <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+References: <e163e2f50604101331q1abc4a44m7155b4b96e3d4d03@mail.gmail.com>
+	 <e163e2f50604101333l6c852e25gf863d408e6b0a72a@mail.gmail.com>
+	 <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+Message-ID: <c30322d0604101423v540d0655m898fe955bfa2582b@mail.gmail.com>
+
+Bah, entrou um akeys a?, mas nem precisa.
+
+a?
+
+On 4/10/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+>
+> A segunda ? mais complicada e menos intuitiva, n?o conseguiria acompanhar
+> sem uma explica??o. D? para fazer o XPath de maneira mais simples, Arrais,
+> basta ajustar a consulta. D? uma olhada no exemplo abaixo para ver como
+> fazer isso:
+>
+> <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+>    " http://www.w3.org/TR/html4/loose.dtd">
+>
+> <html>
+>     <head>
+>         <title>Motiro - XPath</title>
+>         <script type="text/javascript">
+>             function doXPath() {
+>                 var divs = akeys = document.evaluate("//img[contains(@src,
+> '/images/rss.gif')]",
+>                         document,
+>                         null,
+>                         XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
+>                         null);
+>
+>                 alert(divs.snapshotLength ); // ? para mostrar 4
+>             }
+>         </script>
+>     </head>
+>     <body onload="javascript:doXPath();">
+>         <img src="/images/rss.gif?321654564" />
+>         <img src="/images/rss.gif?5463765676" />
+>         <img src="/images/rss.gif?78678567" />
+>         <img src="/images/rss.gif?890790" />
+>     </body>
+> </html>
+>
+> Ou seja, n?o tem starts_with, mas tem contains que j? deve bastar.
+>
+> Abra?o...
+>
+>
+> On 4/10/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+> >
+> > Pessoal,
+> >
+> > Com a atualiza??o do engine Rails para a vers?o 1.1, alguns de nossos
+> > testes de aceita??o passaram a falhar. Mas n?o ? nada demais, j?
+> > chequei as causas e tudo parece bem. O problema ? que nesta ?ltima
+> > vers?o, a fun??o image_tag (usada para gerar os tags img nas nossas
+> > p?ginas) passou a incluir informa??o de timestamp, para enganar o
+> > caching dos browsers e facilitar a vida do desenvolvedor.
+> >
+> > O problema ? que os testes estavam confiando no formato da tag src
+> > para verificar a p?gina. T?nhamos (ali?s, ainda temos at? alternativa
+> > melhor) nos nossos scripts de teste, algo como
+> >
+> > assertElementPresent "//img[@src='/images/rss.gif']"
+> >
+> > S? que agora as imagens n?o t?m mais o atributo src=' rss.gif' somente,
+> > ao inv?s disso temos
+> >
+> > <img src="/images/rss.gif?1142366545" />
+> >
+> > O n?mero no final vem ? do timestamp do arquivo. A p?gina ainda
+> > aparece normalmente, s? que os testes falham porque o atributo src nao
+> > est? como esperado. Queria a opini?o (e a ajuda) de voc?s quanto a
+> > duas solu??es que pensei.
+> >
+> > 1. Reajustar os testes, modificando o localizador em XPath
+> >
+> > Ao inv?s de termos o script de teste com
+> >
+> > assertElementPresent "//img[@src='/images/rss.gif']"
+> >
+> > Ter?amos algo do tipo
+> >
+> > assertElementPresent "//img[@src.starts_wtih('/images/rss.gif')]"
+> >
+> > Traduzindo: verifique se a pagina possui um elemento img cujo atributo
+> > src inicia com o prefixo '/images/rss.gif'. Mas este _n?o_ ? um
+> > localizador XPath v?lido e/ou o Selenium n?o consegue interpret?-lo. A
+> > maior difculdade desta abordagem ? aprender como dizer isso em XPath.
+> > Tem tamb?m o problema do relaxamento do script de teste, mas acho
+> > dif?cil o c?digo quebrar _desse_ jeito.
+> >
+> > 2. T?cnica CSS para substitui??o de texto por imagem
+> >
+> > Aqui a p?gina HTML gerada n?o vai ter nenhuma diretiva img. Ao inv?s
+> > disso, vamos marcar um peda?o de texto para ser substitu?do por uma
+> > imagem quando for aplicada a folha de estilos. Ao inv?s do c?digo html
+> > ser assim
+> >
+> > <img src='/images/rss.gif />
+> >
+> > Vamos ter algo parecido com isso
+> >
+> > <div class='rss-link'>RSS<span /></div>
+> >
+> > Na(s) regra(s) para tratamento da classe rss-link, escondemos o texto
+> > e colocamos a imagem em seu lugar. Maiores detalhes nesse links:
+> >
+> > http://wellstyled.com/css-replace-text-by-image.html
+> > http://www.stopdesign.com/articles/replace_text/
+> >
+> > Esta ? a abordagem que implementei (revis?o 142), n?o porque eu tenha
+> > avaliado e achado melhor, mas porque foi a ?nica que consegui.
+> >
+> > O que voc?s acham?
+> >
+> > Abra?o,
+> >
+> > Thiago Arrais
+> > --
+> > Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> > Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> > tecnologia em geral
+> > _______________________________________________
+> > Motiro-devel-pt_br mailing list
+> > Motiro-devel-pt_br at lists.berlios.de
+> > http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+> >
+>
+>
+>
+> --
+> Marcos Silva Pereira
+> recife - pe
+> marcos.silva at gmail.com
+> http://blastemica.blogspot.com
+>
+
+
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060410/537f6be2/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Apr 11 01:58:03 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 10 Apr 2006 20:58:03 -0300
+Subject: [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+In-Reply-To: <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+References: <e163e2f50604101331q1abc4a44m7155b4b96e3d4d03@mail.gmail.com>
+	 <e163e2f50604101333l6c852e25gf863d408e6b0a72a@mail.gmail.com>
+	 <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+Message-ID: <e163e2f50604101658o7de86935t4a2b6f9e1ec48ee2@mail.gmail.com>
+
+On 4/10/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> A segunda ? mais complicada e menos intuitiva, n?o conseguiria acompanhar
+> sem uma explica??o. D? para fazer o XPath de maneira mais simples, Arrais,
+> basta ajustar a consulta.
+
+Concordo contigo. Minha primeira op??o era o XPath tamb?m, mas acabei
+descanbando pro CSS depois de muito apanhar. Vou modificar o c?digo.
+
+Valeu,
+
+Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Tue Apr 11 16:27:48 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 11 Apr 2006 11:27:48 -0300
+Subject: [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+In-Reply-To: <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+References: <e163e2f50604101331q1abc4a44m7155b4b96e3d4d03@mail.gmail.com>
+	 <e163e2f50604101333l6c852e25gf863d408e6b0a72a@mail.gmail.com>
+	 <c30322d0604101422v4b847a93g6c495f2e272de21a@mail.gmail.com>
+Message-ID: <e163e2f50604110727s2b587239m3017ee0657b79ca2@mail.gmail.com>
+
+On 4/10/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Ou seja, n?o tem starts_with, mas tem contains que j? deve bastar.
+
+Erro meu. O nome da fun??o ? start-with, com h?fen ao inv?s de sublinhado.
+
+Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Thu Apr 13 20:03:20 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Thu, 13 Apr 2006 15:03:20 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Seguran=E7a_para_o_login?=
+Message-ID: <e163e2f50604131103v3076a59dxf3528052adf1ccde@mail.gmail.com>
+
+Pessoal,
+
+Estou tentando colocar autentica??o no Motiro. Com ajuda desta p?gina aqui
+
+http://wiki.rubyonrails.org/rails/pages/HowToQuicklyDoAuthenticationWithLoginGenerator#fn1
+
+consegui fazer as funcionalidades b?sicas de login em menos de 10
+minutos. Mas a alegria durou pouco. Quando dei uma olhada no tr?fego
+na rede vi que a senha viajava em texto puro sobre HTTP.
+
+Estou tentando achar uma solu??o mais segura, usando HTTPS, talvez.
+Achei esse bicho aqui:
+http://dev.rubyonrails.org/browser/plugins/ssl_requirement
+
+Mas n?o estou conseguindo usar. Algu?m j? fez algo do tipo?
+
+Abra?os,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+

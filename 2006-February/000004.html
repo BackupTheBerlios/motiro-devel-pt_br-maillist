@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Coisas das quais me arrependo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Coisas%20das%20quais%20me%20arrependo&In-Reply-To=%3Ce163e2f50602201040r4adcb563mded52b2b201f45af%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000002.html">
+   <LINK REL="Next"  HREF="000003.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Coisas das quais me arrependo</H1>
+    <B>Thiago Arrais</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Coisas%20das%20quais%20me%20arrependo&In-Reply-To=%3Ce163e2f50602201040r4adcb563mded52b2b201f45af%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Coisas das quais me arrependo">thiago.arrais at gmail.com
+       </A><BR>
+    <I>Mon Feb 20 19:40:50 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000002.html">[Motiro-devel-pt_br] Coisas das quais me arrependo
+</A></li>
+        <LI>Next message: <A HREF="000003.html">[Motiro-devel-pt_br] Parametriza&#231;&#227;o
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 2/20/06, Marcos Silva Pereira &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>&gt; wrote:
+&gt;<i> Bom, eu dei uma lida rapida no capitulo sobre testes na documenta&#231;&#227;o (
+</I>&gt;<i> <A HREF="http://manuals.rubyonrails.com/read/book/5">http://manuals.rubyonrails.com/read/book/5</A>) e parece que
+</I>&gt;<i> n&#227;o &#233; algo t&#227;o estranho assim. Alias, vi testes para alguns plugins e eles
+</I>&gt;<i> usavam uma abordagem parecida com a que vc usou.
+</I>
+Pois &#233;. Eu tirei isso do pr&#243;prio c&#243;digo que o rails gera. Mas continua
+achando altamente feio.
+
+&gt;<i> &gt; $:.push File.expand_path(File.dirname(__FILE__) + '/..')
+</I>&gt;<i> &gt; $:.push File.expand_path (File.dirname(__FILE__) + '/../../app')
+</I>&gt;<i>
+</I>&gt;<i> Esse trecho poderia ser reescrito para:
+</I>&gt;<i>
+</I>&gt;<i> $: &lt;&lt; File.expand_path(File.dirname(__FILE__) + '/..')
+</I>&gt;<i> $: &lt;&lt; File.expand_path(File.dirname(__FILE__) + '/../../app')
+</I>
+Essa sugest&#227;o &#233; um pouco menos criptogr&#225;fica, dependendo do ponto de
+vista. Mas o que me incomoda mais n&#227;o &#233; a sequ&#234;ncia esquisita de
+pontua&#231;&#227;o no in&#237;cio das linhas, mas o tamanho e o n&#250;mero de chamadas
+expl&#237;citas a m&#233;todos. Por enq&#252;anto s&#227;o duas, no meu mundo ideal n&#227;o
+seria nenhuma.
+
+&gt;<i> Mas, por que vc n&#227;o fez algo como:
+</I>&gt;<i>
+</I>&gt;<i> require File.dirname(__FILE__) + '/..'
+</I>&gt;<i> require File.dirname(__FILE__) + '/../../app'
+</I>&gt;<i>
+</I>&gt;<i> ?
+</I>
+Usar as chamadas de m&#233;todo diretamente no require pode se tornar ainda
+mais verborr&#225;gico. Adicionando os diret&#243;rios ao load path eu posso
+escrever algo como
+
+require 'stubs/svn_connection'
+require 'reporters/svn_reporter'
+
+o que fica bem mais limpo do que
+
+require File.dirname(__FILE__) + '/../stubs/svn_connection'
+require File.dirname(__FILE__) + '/../../app/reporters/svn_reporter'
+
+A n&#227;o ser que eu n&#227;o tenha entendido direito o significado do require.
+Isso acontece... :-)
+
+&gt;<i> Acho que o arquivo mais apropriado para colocar essas &quot;esquesiticies&quot; &#233; o
+</I>&gt;<i> test/test_helper.rb j&#225; que ele &#233; automaticamente inserido em qualquer
+</I>&gt;<i> arquivo de testes gerado pelo rails (quando se usa um script/generate alguma
+</I>&gt;<i> coisa).
+</I>
+Bom, eu cheguei no ponto que teria que repetir este trecho de c&#243;digo
+em outro programa de teste. Como estou tentando ser um bom menino e
+n&#227;o escrever c&#243;digo repetido, coloquei as duas famigeradas linhas no
+arquivo test/test_env.rb e inseri um require para ele em cada um dos
+testes. Mais ou menos assim
+
+require File.expand_path(File.dirname(__FILE__) + '/../test_env')
+
+Minha primeira op&#231;&#227;o foi usar o test_helper.rb, por&#233;m parece que ele
+exige alguma coisa do banco de dados. N&#227;o sei bem o que &#233;, mas vi um
+&quot;mysql.sock&quot; na mensagem de erro. Esses testes iniciais ainda n&#227;o
+estou usando nada de banco de dados e achei que seria exigir demais
+ter um banco de dados pronto e rodando somente para rodar estes
+testes. Por isso resolvi fazer meu pr&#243;prio test_env.rb
+
+&gt;<i> N&#227;o tenho certeza, mas parece que Ruby disponibiliza os &quot;require&quot; da
+</I>&gt;<i> classe pai nas classes filha.
+</I>
+Acho que disponibiliza sim. Pelo que eu entendo de Ruby, a execu&#231;&#227;o de
+um programa &#233; basicamente uma interpreta&#231;&#227;o de um grande arquivo-fonte
+montado em tempo de execu&#231;&#227;o. Isso quer dizer que quando voc&#234; faz um
+require do arquivo de origem da classe pai ele &#233; &quot;executado&quot;. Como
+efeito colateral dessa &quot;execu&#231;&#227;o&quot;, algumas entidades s&#227;o definidas. O
+interessante &#233; que as cl&#225;usulas require do arquivo da classe pai
+tamb&#233;m s&#227;o executadas como resultado da avalia&#231;&#227;o do require do
+arquivo da classe filha. Isso acontece _antes_ da defini&#231;&#227;o da classe
+filha (se voc&#234; colocou a cl&#225;usula require no topo do arquivo). O
+efeito disso &#233; que tudo que est&#225; dispon&#237;vel para a classe pai tamb&#233;m
+est&#225; para a classe filha.
+
+Algu&#233;m me corrija se meu modelo mental estiver errado, por favor.
+Estou me baseando nele para todo meu desenvolvimento em Ruby. Se ele
+estiver errado, vou bater com o nariz na parede em algum ponto...
+
+&gt;<i> N&#227;o, vc pode adicionar classes ao seu modelo livremente, Arrais. Agora, _se_
+</I>&gt;<i> quiser acesso a banco, o rails facilita a vida para acesso a banco de dados
+</I>&gt;<i> com o ActiveRecord. Mas, vc n&#227;o &#233; obrigado a usar isso em todas as classes
+</I>&gt;<i> de modelo.
+</I>
+Isso &#233; bom. Vou mover a classe Headline para l&#225;.
+
+&gt;<i> Depois, quando puder olhar o codigo, eu dou uma olhada/alterada e comito.
+</I>
+Tranq&#252;ilo. Fa&#231;a isso mesmo.
+
+Abra&#231;o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000002.html">[Motiro-devel-pt_br] Coisas das quais me arrependo
+</A></li>
+	<LI>Next message: <A HREF="000003.html">[Motiro-devel-pt_br] Parametriza&#231;&#227;o
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Mocks para o ActiveRecord.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Mocks%20para%20o%20ActiveRecord.&In-Reply-To=%3Ce163e2f50604031641r53c39722vc9e43a1748265c33%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000016.html">
+   <LINK REL="Next"  HREF="000027.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Mocks para o ActiveRecord.</H1>
+    <B>Thiago Arrais</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Mocks%20para%20o%20ActiveRecord.&In-Reply-To=%3Ce163e2f50604031641r53c39722vc9e43a1748265c33%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Mocks para o ActiveRecord.">thiago.arrais at gmail.com
+       </A><BR>
+    <I>Tue Apr  4 01:41:30 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000016.html">[Motiro-devel-pt_br] Mocks para o ActiveRecord.
+</A></li>
+        <LI>Next message: <A HREF="000027.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 4/3/06, Marcos Silva Pereira &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>&gt; wrote:
+&gt;<i> Mas, a&#237; fiquei pensando, n&#227;o seria o caso de usar mocks para o active record
+</I>&gt;<i> e evitar esse tipo de problema? Ou estou for&#231;ando a barra, o que acham?
+</I>
+Seria &#243;timo. Tamb&#233;m n&#227;o gosto muito dos testes indo bater no banco de
+dados toda vez. Fica muito lento.
+
+Mas isso precisa ser melhor pesquisado. Talvez se substituirmos a
+conex&#227;o do ActiveRecord por uma conex&#227;o falsa, possamos conseguir o
+que queremos. Mas de um modo geral eu acho o ActiveRecord muito
+dependente da base de dados para conseguirmos algo sem grandes
+esfor&#231;os. Como exemplo, os m&#233;todos correspondentes aos campos das
+tabelas s&#227;o gerados nos bastidores por ele, isso exigiria que a
+conex&#227;o falsa fosse capaz de responder a essa requisi&#231;&#227;o.
+
+N&#227;o que n&#227;o valha a pena pesquisar, claro.
+
+Para resolver o problema da performance, podemos tentar rodar a base
+de dados em um espa&#231;o do sistemas de arquivos mapeado em mem&#243;ria e n&#227;o
+em disco.
+
+J&#225; que est&#225;s mexendo, tentaste rodar os testes selenium? O selenium
+est&#225; meio verde ainda e &#224;s vezes tenho uns problemas de concorr&#234;ncia.
+Mas &#233; massa ver o navegador andando sozinho.
+
+Abra&#231;o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000016.html">[Motiro-devel-pt_br] Mocks para o ActiveRecord.
+</A></li>
+	<LI>Next message: <A HREF="000027.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

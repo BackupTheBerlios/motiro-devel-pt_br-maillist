@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Arquitetura Hexagonal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Arquitetura%20Hexagonal&In-Reply-To=%3Ce163e2f50602211016y4c121a2dw319d11a0c88cd62c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000010.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Arquitetura Hexagonal</H1>
+    <B>Thiago Arrais</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Arquitetura%20Hexagonal&In-Reply-To=%3Ce163e2f50602211016y4c121a2dw319d11a0c88cd62c%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Arquitetura Hexagonal">thiago.arrais at gmail.com
+       </A><BR>
+    <I>Tue Feb 21 19:16:45 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000010.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Parametriza&#231;&#227;o
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Pessoal,
+
+Voc&#234;s est&#227;o familiarizados com arquitetura hexagonal? Estou
+desenvolvendo o c&#243;digo inicial do Motiro com base nela. Tem um artigo
+aqui, de Alistair Cockburn
+
+<A HREF="http://alistair.cockburn.us/crystal/articles/hpaaa/hexagonalportsandadaptersarchitecture.htm">http://alistair.cockburn.us/crystal/articles/hpaaa/hexagonalportsandadaptersarchitecture.htm</A>
+
+A id&#233;ia &#233; ver a aplica&#231;&#227;o como um n&#250;cleo que disponibiliza portas &#224;s
+quais podem ser conectados adaptadores. Estas portas servem para
+aplica&#231;&#227;o se comunicar com o mundo exterior. Um exemplo vai ilustrar
+isso muito bem. Gostaria de poder desenhar UML no e-mail, mas vai em
+Ruby mesmo.
+
+Temos aqui a classe SubversionConnection
+
+class SubversionConnection
+end
+
+Uma das responsabilidades dela &#233; se comunicar com o reposit&#243;rio
+subversion remoto. Em seu estado atual, nossa classe
+SubversionConnection faz isso atrav&#233;s da execu&#231;&#227;o de um processo
+separado. Ela chama o programa 'svn' que deve estar dispon&#237;vel no
+ambiente de execu&#231;&#227;o do servidor. &#201; nesta comunica&#231;&#227;o que entra a
+porta para o mundo exterior. Neste caso, chamei a porta de Runner
+(algo como executor de comandos, pensando bem agora, talvez possamos
+mudar o nome dela para CommandRunner).
+
+O que a classe SubversionConnection precisa fazer &#233; pedir para o
+Runner executar o comando referente &#224; chamada do programa `svn`. Ele,
+em troca, devolve para ela a sa&#237;da do programa. Esse comportamento
+est&#225; dentro do m&#233;todo log.
+
+class SubversionConnection
+    def log
+        @runner.run &quot;svn log <A HREF="svn://svn.berlios.de/motiro">svn://svn.berlios.de/motiro</A>&quot;
+    end
+end
+
+Na verdade, o m&#233;todo real &#233; um pouco mais complicado que isso. Mas d&#225;
+pra entender a id&#233;ia. Quem estiver esfomeado mesmo por c&#243;digo real
+pode dar uma olhada no nosso reposit&#243;rio.
+
+O ganho mais &#243;bvio desta abordagem &#233; quando chega a hora de testar, o
+que no nosso caso de bons TDDeiros &#233; o tempo todo. Posso substituir o
+runner em tempo de execu&#231;&#227;o, simplesmente passando-o ao criar os
+objetos da classe SubversionConnection. Assim posso 'mockar' o runner,
+substitu&#237;-lo por um runner que n&#227;o executa patavinas, apenas verifica
+o que lhe foi solicitado e retorna uma resposta padr&#227;o.
+
+O que voc&#234;s acham dessa abordagem?
+
+Abra&#231;o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000010.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Parametriza&#231;&#227;o
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Mocks para o ActiveRecord.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Mocks%20para%20o%20ActiveRecord.&In-Reply-To=%3Cc30322d0604031413h568d5b27x90a3e185476902e1%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000026.html">
+   <LINK REL="Next"  HREF="000018.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Mocks para o ActiveRecord.</H1>
+    <B>Marcos Silva Pereira</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Mocks%20para%20o%20ActiveRecord.&In-Reply-To=%3Cc30322d0604031413h568d5b27x90a3e185476902e1%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Mocks para o ActiveRecord.">marcos.silva at gmail.com
+       </A><BR>
+    <I>Mon Apr  3 23:13:48 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000026.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+        <LI>Next message: <A HREF="000018.html">[Motiro-devel-pt_br] Mocks para o ActiveRecord.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#16">[ date ]</a>
+              <a href="thread.html#16">[ thread ]</a>
+              <a href="subject.html#16">[ subject ]</a>
+              <a href="author.html#16">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Uma das boas praticas para testes unitarios &#233; que eles rodem um bocado
+independentes do ambiente, isso para evitar situa&#231;&#245;es nas quais os testes
+passam na maquina de um desenvolvedor, mas, por diferen&#231;as no ambiente, n&#227;o
+passam na de outro. Ontem enquanto fu&#231;ava no codigo do Motiro, por um
+instante parei o servi&#231;o do MySQL, n&#227;o lembro exatamente agora porque, e,
+ent&#227;o, quando fui rodar os testes, tomei um bocado de letras e barras
+vermelhos na cara. O Active Record reclamou que n&#227;o conseguia estabelecer
+conex&#227;o com o banco. Ok, reiniciei o servi&#231;o e tudo ficou verde.
+
+Mas, a&#237; fiquei pensando, n&#227;o seria o caso de usar mocks para o active record
+e evitar esse tipo de problema? Ou estou for&#231;ando a barra, o que acham?
+
+valeuz...
+
+--
+Marcos Silva Pereira
+recife - pe
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>
+<A HREF="http://blastemica.blogspot.com">http://blastemica.blogspot.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060403/f22ad463/attachment.html">https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060403/f22ad463/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000026.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+	<LI>Next message: <A HREF="000018.html">[Motiro-devel-pt_br] Mocks para o ActiveRecord.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#16">[ date ]</a>
+              <a href="thread.html#16">[ thread ]</a>
+              <a href="subject.html#16">[ subject ]</a>
+              <a href="author.html#16">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

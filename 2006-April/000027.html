@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Javascript/XPath/CSS%20e%20os%20testes%20do%20Motiro&In-Reply-To=%3Ce163e2f50604101333l6c852e25gf863d408e6b0a72a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000018.html">
+   <LINK REL="Next"  HREF="000028.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro</H1>
+    <B>Thiago Arrais</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Javascript/XPath/CSS%20e%20os%20testes%20do%20Motiro&In-Reply-To=%3Ce163e2f50604101333l6c852e25gf863d408e6b0a72a%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro">thiago.arrais at gmail.com
+       </A><BR>
+    <I>Mon Apr 10 22:33:22 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000018.html">[Motiro-devel-pt_br] Mocks para o ActiveRecord.
+</A></li>
+        <LI>Next message: <A HREF="000028.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#27">[ date ]</a>
+              <a href="thread.html#27">[ thread ]</a>
+              <a href="subject.html#27">[ subject ]</a>
+              <a href="author.html#27">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Pessoal,
+
+Com a atualiza&#231;&#227;o do engine Rails para a vers&#227;o 1.1, alguns de nossos
+testes de aceita&#231;&#227;o passaram a falhar. Mas n&#227;o &#233; nada demais, j&#225;
+chequei as causas e tudo parece bem. O problema &#233; que nesta &#250;ltima
+vers&#227;o, a fun&#231;&#227;o image_tag (usada para gerar os tags img nas nossas
+p&#225;ginas) passou a incluir informa&#231;&#227;o de timestamp, para enganar o
+caching dos browsers e facilitar a vida do desenvolvedor.
+
+O problema &#233; que os testes estavam confiando no formato da tag src
+para verificar a p&#225;gina. T&#237;nhamos (ali&#225;s, ainda temos at&#233; alternativa
+melhor) nos nossos scripts de teste, algo como
+
+assertElementPresent &quot;//img[@src='/images/rss.gif']&quot;
+
+S&#243; que agora as imagens n&#227;o t&#234;m mais o atributo src='rss.gif' somente,
+ao inv&#233;s disso temos
+
+&lt;img src=&quot;/images/rss.gif?1142366545&quot; /&gt;
+
+O n&#250;mero no final vem &#233; do timestamp do arquivo. A p&#225;gina ainda
+aparece normalmente, s&#243; que os testes falham porque o atributo src nao
+est&#225; como esperado. Queria a opini&#227;o (e a ajuda) de voc&#234;s quanto a
+duas solu&#231;&#245;es que pensei.
+
+1. Reajustar os testes, modificando o localizador em XPath
+
+Ao inv&#233;s de termos o script de teste com
+
+assertElementPresent &quot;//img[@src='/images/rss.gif']&quot;
+
+Ter&#237;amos algo do tipo
+
+assertElementPresent &quot;//img[@src.starts_wtih('/images/rss.gif')]&quot;
+
+Traduzindo: verifique se a pagina possui um elemento img cujo atributo
+src inicia com o prefixo '/images/rss.gif'. Mas este _n&#227;o_ &#233; um
+localizador XPath v&#225;lido e/ou o Selenium n&#227;o consegue interpret&#225;-lo. A
+maior difculdade desta abordagem &#233; aprender como dizer isso em XPath.
+Tem tamb&#233;m o problema do relaxamento do script de teste, mas acho
+dif&#237;cil o c&#243;digo quebrar _desse_ jeito.
+
+2. T&#233;cnica CSS para substitui&#231;&#227;o de texto por imagem
+
+Aqui a p&#225;gina HTML gerada n&#227;o vai ter nenhuma diretiva img. Ao inv&#233;s
+disso, vamos marcar um peda&#231;o de texto para ser substitu&#237;do por uma
+imagem quando for aplicada a folha de estilos. Ao inv&#233;s do c&#243;digo html
+ser assim
+
+&lt;img src='/images/rss.gif /&gt;
+
+Vamos ter algo parecido com isso
+
+&lt;div class='rss-link'&gt;RSS&lt;span /&gt;&lt;/div&gt;
+
+Na(s) regra(s) para tratamento da classe rss-link, escondemos o texto
+e colocamos a imagem em seu lugar. Maiores detalhes nesse links:
+
+<A HREF="http://wellstyled.com/css-replace-text-by-image.html">http://wellstyled.com/css-replace-text-by-image.html</A>
+<A HREF="http://www.stopdesign.com/articles/replace_text/">http://www.stopdesign.com/articles/replace_text/</A>
+
+Esta &#233; a abordagem que implementei (revis&#227;o 142), n&#227;o porque eu tenha
+avaliado e achado melhor, mas porque foi a &#250;nica que consegui.
+
+O que voc&#234;s acham?
+
+Abra&#231;o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000018.html">[Motiro-devel-pt_br] Mocks para o ActiveRecord.
+</A></li>
+	<LI>Next message: <A HREF="000028.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#27">[ date ]</a>
+              <a href="thread.html#27">[ thread ]</a>
+              <a href="subject.html#27">[ subject ]</a>
+              <a href="author.html#27">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,9 @@
+From infoemail at bradesco.com  Mon Aug 24 03:12:31 2009
+From: infoemail at bradesco.com (infoemail@bradesco.com.br)
+Date: Mon, 24 Aug 2009 01:12:31 +0000 (UTC)
+Subject: Componente de Segurança Extra.
+Message-ID: <20090824011231.799D3A00000EA@caplan.tpn.terra.com>
+
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20090824/f53245bf/attachment.html>
+

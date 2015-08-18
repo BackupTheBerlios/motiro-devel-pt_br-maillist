@@ -1,0 +1,661 @@
+From marcos.silva at gmail.com  Fri Feb 17 15:29:35 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Fri, 17 Feb 2006 11:29:35 -0300
+Subject: [Motiro-devel-pt_br] (no subject)
+Message-ID: <c30322d0602170629i5c99137t101955d2f80182aa@mail.gmail.com>
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060217/95c171f0/attachment.html>
+
+From thiago.arrais at gmail.com  Fri Feb 17 18:09:02 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Fri, 17 Feb 2006 14:09:02 -0300
+Subject: [Motiro-devel-pt_br] Coisas das quais me arrependo
+Message-ID: <e163e2f50602170909u7dde1223j120cf89821475b57@mail.gmail.com>
+
+Pessoal,
+
+Finalmente consegui fazer aquele primeiro teste para o reporter de
+Subversion falhar decemente (sim, falhar decentemente ? progresso :-).
+Mas tenho que confessar que fiz algumas coisas das quais me arrependo.
+S?o coisas as quais tenho experi?ncia suficiente para saber que n?o
+est?o ruins, mas que n?o tenho experi?ncia necess?ria para saber como
+deix?-las boas. Seria bom se algu?m pudesse ma ajudar a melhor?-las.
+
+O primeiro problema est? no arquivo de teste (em
+src/test/unit/svn_reporter_test.rb Logo no come?o podemos ver as
+seguintes linhas
+
+$:.push File.expand_path(File.dirname(__FILE__) + '/..')
+$:.push File.expand_path(File.dirname(__FILE__) + '/../../app')
+
+Esquisito? Tamb?m achei. Mas vou explic?-las (ou pelo menos tentar). A
+vari?vel "$:" ? uma lista de nomes de diret?rios, ? nela que o motor
+ruby vai procurar os arquivos quando voc? diz algo como "require
+'test/uni'". O que estas duas linhas est?o fazendo ? adicionar o
+diret?rio src/test e src/app a essa lista, utilizando endere?os
+relativos ? localizacao do arquivo svn_reporter_test.rb Isto nos
+permite escrever mais abaixo as seguintes linhas
+
+require 'stubs/svn_connection'
+require 'reporters/svn_reporter'
+
+Assim ficamos livres de deixar as linhas do require esquisitas. Al?m
+disso poderemos, no futuro, mover essas linhas da $: para algum outro
+arquivo fonte e utiliz?-lo para todos os teste. As linhas require
+ficam limpas em todos os arquivos se fizermos isso. Isso ? bom, por?m
+achei meio for?ada de barra o que eu fiz. Talvez ruby ou rails
+permitam um formato menos cr?ptogr?fico, mas minha ignor?ncia
+rubystica ainda n?o o conhece.
+
+O segundo problema est? no arquivo src/app/reporters/svn_reporter.rb
+Este arquivo abriga a classe que estou querendo escrever para passar
+no meu teste. Se voc?s abrirem o arquivo poder?o ver que h?, al?m da
+classe 'dona' do arquivo (a SubversionReporter), outra classe chamada
+Headline. N?o joguem as pedras em mim ainda! Eu coloquei a classe no
+mesmo arquivo porque acho que Headline vai fazer parte do nosso
+modelo, ou seja, vai ficar dentro do diret?rio model. S? que minha
+santa ignor?ncia em rails deduziu que s? ? poss?vel adicionar uma
+classe ao modelo quando h? acesso a um banco de dados. O problema ?
+que eu n?o queria introduzir o acesso a banco de dados ainda. Podemos
+mover a classe para o model manualmente (sem cri?-la atrav?s do script
+generate)? Isso n?o vai nos dar alguns problemas de incompatibilidade
+no futuro, quando come?armos a gerar os models?
+
+Com o terceiro e ?ltimo problema eu n?o estou muito preocupado,
+confesso. Mas acho que h? algum jeito mais r?byco de escrever o c?digo
+(utilizando mixins para deixar a coisa mais bonita ou sei l?). Este
+problema est? em src/test/stubs/svn_connection.rb.
+
+Este arquivo define uma class StubSVNConnection, um substituto de
+testes para a classe de verdade SVNConnection. A conex?o stub responde
+com a sa?da com que foi instru?da a responder, atrav?s do m?todo
+log_append_text. No final, ela s? precisa definir este m?todo e
+sobrescrever o m?todo read_log da classe SVNConnection (que ainda n?o
+existe e, na verdade, n?o sei nem se o nome vai ser esse mesmo). Claro
+que posso fazer isso atrav?s da boa e velha heran?a. Queria saber se
+h? outras sugest?es, se h? alguma express?o idiom?tica em ruby que
+resolva isso.
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Mon Feb 20 18:50:59 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Mon, 20 Feb 2006 14:50:59 -0300
+Subject: [Motiro-devel-pt_br] Coisas das quais me arrependo
+In-Reply-To: <e163e2f50602170909u7dde1223j120cf89821475b57@mail.gmail.com>
+References: <e163e2f50602170909u7dde1223j120cf89821475b57@mail.gmail.com>
+Message-ID: <c30322d0602200950x208700a0iede904e37b1d1a96@mail.gmail.com>
+
+Arrais,  n?o posso mexer no codigo agora, ent?o, vou enviar o email e se vc
+puder, j? d? uma olhada para ver se d? ou n?o para seguir as "dicas". Depois
+vc me avisa. ;-)
+
+O primeiro problema est? no arquivo de teste (em
+> src/test/unit/svn_reporter_test.rb Logo no come?o podemos ver as
+> seguintes linhas
+
+
+Bom, eu dei uma lida rapida no capitulo sobre testes na documenta??o (
+http://manuals.rubyonrails.com/read/book/5) e parece que n?o ? algo t?o
+estranho assim. Alias, vi testes para alguns plugins e eles usavam uma
+abordagem parecida com a que vc usou.
+
+$:.push File.expand_path(File.dirname(__FILE__) + '/..')
+> $:.push File.expand_path (File.dirname(__FILE__) + '/../../app')
+
+
+Esse trecho poderia ser reescrito para:
+
+$: << File.expand_path(File.dirname(__FILE__) + '/..')
+$: << File.expand_path(File.dirname(__FILE__) + '/../../app')
+
+Mas, por que vc n?o fez algo como:
+
+require File.dirname(__FILE__) + '/..'
+require File.dirname(__FILE__) + '/../../app'
+
+?
+
+Assim ficamos livres de deixar as linhas do require esquisitas. Al?m
+> disso poderemos, no futuro, mover essas linhas da $: para algum outro
+> arquivo fonte e utiliz?-lo para todos os teste. As linhas require
+> ficam limpas em todos os arquivos se fizermos isso. Isso ? bom, por?m
+> achei meio for?ada de barra o que eu fiz. Talvez ruby ou rails
+> permitam um formato menos cr?ptogr?fico, mas minha ignor?ncia
+> rubystica ainda n?o o conhece.
+
+
+Acho que o arquivo mais apropriado para colocar essas "esquesiticies" ? o
+test/test_helper.rb j? que ele ? automaticamente inserido em qualquer
+arquivo de testes gerado pelo rails (quando se usa um script/generate alguma
+coisa). N?o tenho certeza, mas parece que Ruby disponibiliza os "require" da
+classe pai nas classes filha.
+
+O segundo problema est? no arquivo src/app/reporters/svn_reporter.rb
+> Este arquivo abriga a classe que estou querendo escrever para passar
+> no meu teste. Se voc?s abrirem o arquivo poder?o ver que h?, al?m da
+> classe 'dona' do arquivo (a SubversionReporter), outra classe chamada
+> Headline. N?o joguem as pedras em mim ainda! Eu coloquei a classe no
+> mesmo arquivo porque acho que Headline vai fazer parte do nosso
+> modelo, ou seja, vai ficar dentro do diret?rio model. S? que minha
+> santa ignor?ncia em rails deduziu que s? ? poss?vel adicionar uma
+> classe ao modelo quando h? acesso a um banco de dados. O problema ?
+> que eu n?o queria introduzir o acesso a banco de dados ainda.
+
+
+N?o, vc pode adicionar classes ao seu modelo livremente, Arrais. Agora, _se_
+quiser acesso a banco, o rails facilita a vida para acesso a banco de dados
+com o ActiveRecord. Mas, vc n?o ? obrigado a usar isso em todas as classes
+de modelo.
+
+Podemos
+> mover a classe para o model manualmente (sem cri?-la atrav?s do script
+> generate)? Isso n?o vai nos dar alguns problemas de incompatibilidade
+> no futuro, quando come?armos a gerar os models?
+
+
+N?o haver? problemas, s? que essas classes de modelo ser?o geradas
+manualmente e n?o com o script/generate.
+
+Com o terceiro e ?ltimo problema eu n?o estou muito preocupado,
+> confesso. Mas acho que h? algum jeito mais r?byco de escrever o c?digo
+> (utilizando mixins para deixar a coisa mais bonita ou sei l?). Este
+> problema est? em src/test/stubs/svn_connection.rb.
+>
+> Este arquivo define uma class StubSVNConnection, um substituto de
+> testes para a classe de verdade SVNConnection. A conex?o stub responde
+> com a sa?da com que foi instru?da a responder, atrav?s do m?todo
+> log_append_text. No final, ela s? precisa definir este m?todo e
+> sobrescrever o m?todo read_log da classe SVNConnection (que ainda n?o
+> existe e, na verdade, n?o sei nem se o nome vai ser esse mesmo). Claro
+> que posso fazer isso atrav?s da boa e velha heran?a. Queria saber se
+> h? outras sugest?es, se h? alguma express?o idiom?tica em ruby que
+> resolva isso.
+>
+> Abra?o,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+Depois, quando puder olhar o codigo, eu dou uma olhada/alterada e comito.
+
+Abra?o...
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060220/710fb0c8/attachment.html>
+
+From thiago.arrais at gmail.com  Mon Feb 20 19:08:00 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 20 Feb 2006 15:08:00 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Parametriza=E7=E3o?=
+Message-ID: <e163e2f50602201008g57f029d0icf0539d2de832af@mail.gmail.com>
+
+Pessoal,
+
+Estou come?ando a parametrizar (coisas como URL do repositorio,
+timeout de resposta, etc.) o reporter para subversion. Gostaria de
+saber a opini?o de voc?s sobre como isso deve ser implementado.
+
+As op??es que consegui elaborar at? agora s?o:
+
+- Arquivo XML
+- Arquivo YAML
+- Arquivo Ruby
+
+Sinceramente, acho as duas ?ltimas op??es mais interessantes por serem
+mais amig?veis a meu ver. XML ? muito verborr?gico na minha opini?o.
+
+A id?ia da ?ltima op??o ? ter algo parecido com um arquivo Rake, em
+que h? uma sintaxe b?sica mas que, na verdade, ? tudo Ruby. O usu?rio
+n?o iria nem notar que est? editando c?digo-fonte. Acho bem
+interessante esta id?ia (apesar de pensar que pode ser um pouco de
+over-engineering - palavra em portugu?s para isso???), mas tamb?m n?o
+sei como implement?-la (talvez isso a torne ainda mais interessante
+:-).
+
+Claro que qualquer que seja a op??o escolhida, no futuro o usu?rio
+dever? poder configurar a aplica??o atrav?s da interface web. Por
+enq?anto vamos orientar os usu?rios a mudar as configura??es nos
+arquivos.
+
+O que voc?s acham?
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Mon Feb 20 19:40:50 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 20 Feb 2006 15:40:50 -0300
+Subject: [Motiro-devel-pt_br] Coisas das quais me arrependo
+In-Reply-To: <c30322d0602200950x208700a0iede904e37b1d1a96@mail.gmail.com>
+References: <e163e2f50602170909u7dde1223j120cf89821475b57@mail.gmail.com>
+	 <c30322d0602200950x208700a0iede904e37b1d1a96@mail.gmail.com>
+Message-ID: <e163e2f50602201040r4adcb563mded52b2b201f45af@mail.gmail.com>
+
+On 2/20/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Bom, eu dei uma lida rapida no capitulo sobre testes na documenta??o (
+> http://manuals.rubyonrails.com/read/book/5) e parece que
+> n?o ? algo t?o estranho assim. Alias, vi testes para alguns plugins e eles
+> usavam uma abordagem parecida com a que vc usou.
+
+Pois ?. Eu tirei isso do pr?prio c?digo que o rails gera. Mas continua
+achando altamente feio.
+
+> > $:.push File.expand_path(File.dirname(__FILE__) + '/..')
+> > $:.push File.expand_path (File.dirname(__FILE__) + '/../../app')
+>
+> Esse trecho poderia ser reescrito para:
+>
+> $: << File.expand_path(File.dirname(__FILE__) + '/..')
+> $: << File.expand_path(File.dirname(__FILE__) + '/../../app')
+
+Essa sugest?o ? um pouco menos criptogr?fica, dependendo do ponto de
+vista. Mas o que me incomoda mais n?o ? a sequ?ncia esquisita de
+pontua??o no in?cio das linhas, mas o tamanho e o n?mero de chamadas
+expl?citas a m?todos. Por enq?anto s?o duas, no meu mundo ideal n?o
+seria nenhuma.
+
+> Mas, por que vc n?o fez algo como:
+>
+> require File.dirname(__FILE__) + '/..'
+> require File.dirname(__FILE__) + '/../../app'
+>
+> ?
+
+Usar as chamadas de m?todo diretamente no require pode se tornar ainda
+mais verborr?gico. Adicionando os diret?rios ao load path eu posso
+escrever algo como
+
+require 'stubs/svn_connection'
+require 'reporters/svn_reporter'
+
+o que fica bem mais limpo do que
+
+require File.dirname(__FILE__) + '/../stubs/svn_connection'
+require File.dirname(__FILE__) + '/../../app/reporters/svn_reporter'
+
+A n?o ser que eu n?o tenha entendido direito o significado do require.
+Isso acontece... :-)
+
+> Acho que o arquivo mais apropriado para colocar essas "esquesiticies" ? o
+> test/test_helper.rb j? que ele ? automaticamente inserido em qualquer
+> arquivo de testes gerado pelo rails (quando se usa um script/generate alguma
+> coisa).
+
+Bom, eu cheguei no ponto que teria que repetir este trecho de c?digo
+em outro programa de teste. Como estou tentando ser um bom menino e
+n?o escrever c?digo repetido, coloquei as duas famigeradas linhas no
+arquivo test/test_env.rb e inseri um require para ele em cada um dos
+testes. Mais ou menos assim
+
+require File.expand_path(File.dirname(__FILE__) + '/../test_env')
+
+Minha primeira op??o foi usar o test_helper.rb, por?m parece que ele
+exige alguma coisa do banco de dados. N?o sei bem o que ?, mas vi um
+"mysql.sock" na mensagem de erro. Esses testes iniciais ainda n?o
+estou usando nada de banco de dados e achei que seria exigir demais
+ter um banco de dados pronto e rodando somente para rodar estes
+testes. Por isso resolvi fazer meu pr?prio test_env.rb
+
+> N?o tenho certeza, mas parece que Ruby disponibiliza os "require" da
+> classe pai nas classes filha.
+
+Acho que disponibiliza sim. Pelo que eu entendo de Ruby, a execu??o de
+um programa ? basicamente uma interpreta??o de um grande arquivo-fonte
+montado em tempo de execu??o. Isso quer dizer que quando voc? faz um
+require do arquivo de origem da classe pai ele ? "executado". Como
+efeito colateral dessa "execu??o", algumas entidades s?o definidas. O
+interessante ? que as cl?usulas require do arquivo da classe pai
+tamb?m s?o executadas como resultado da avalia??o do require do
+arquivo da classe filha. Isso acontece _antes_ da defini??o da classe
+filha (se voc? colocou a cl?usula require no topo do arquivo). O
+efeito disso ? que tudo que est? dispon?vel para a classe pai tamb?m
+est? para a classe filha.
+
+Algu?m me corrija se meu modelo mental estiver errado, por favor.
+Estou me baseando nele para todo meu desenvolvimento em Ruby. Se ele
+estiver errado, vou bater com o nariz na parede em algum ponto...
+
+> N?o, vc pode adicionar classes ao seu modelo livremente, Arrais. Agora, _se_
+> quiser acesso a banco, o rails facilita a vida para acesso a banco de dados
+> com o ActiveRecord. Mas, vc n?o ? obrigado a usar isso em todas as classes
+> de modelo.
+
+Isso ? bom. Vou mover a classe Headline para l?.
+
+> Depois, quando puder olhar o codigo, eu dou uma olhada/alterada e comito.
+
+Tranq?ilo. Fa?a isso mesmo.
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Mon Feb 20 20:45:57 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Mon, 20 Feb 2006 16:45:57 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Parametriza=E7=E3o?=
+In-Reply-To: <c30322d0602201109q1c15e714r85de21fbeda20506@mail.gmail.com>
+References: <e163e2f50602201008g57f029d0icf0539d2de832af@mail.gmail.com>
+	 <c30322d0602201109q1c15e714r85de21fbeda20506@mail.gmail.com>
+Message-ID: <e163e2f50602201145o1f19e79eg6528afae27ad4163@mail.gmail.com>
+
+Repassando e respondendo a mensagem de Marcos.
+
+On 2/20/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> Apesar de achar Ruby interessante para fazer as configura??es, afinal, nem
+> parse fariamos, voto por YAML, ? proprio para configura??o e Ruby oferece
+> suporte default.
+
+Acabei me perdendo em minha pr?pria prolixia e esqueci de perguntar:
+onde devem ficar esses arquivos de configura??o? O diret?rio config da
+estrutura rails tem essa utilidade? Criamos nosso pr?prio diret?rio?
+Onde?
+
+Caso resolvamos criar nosso pr?prio diret?rio, sugiro coloc?-lo fora
+da ?rvore rails. ? f?cil para o usu?rio final se perder ali.
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From livarcocc at gmail.com  Tue Feb 21 13:13:17 2006
+From: livarcocc at gmail.com (Livar Cunha)
+Date: Tue, 21 Feb 2006 09:13:17 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Mo?= =?ISO-8859-1?Q?tiro-devel-pt=5Fbr]_Parametriza=E7=E3o?=
+In-Reply-To: <e163e2f50602201145o1f19e79eg6528afae27ad4163@mail.gmail.com>
+References: <e163e2f50602201008g57f029d0icf0539d2de832af@mail.gmail.com>
+	 <c30322d0602201109q1c15e714r85de21fbeda20506@mail.gmail.com>
+	 <e163e2f50602201145o1f19e79eg6528afae27ad4163@mail.gmail.com>
+Message-ID: <18ed3fc70602210413u193240ffo759b381a70b3c4a0@mail.gmail.com>
+
+Rails possui um diret?rio config no mesmo n?vel do diret?rio app, nele ficam
+as informa??es de banco de dados, de routing, ou seja o mapeamento de
+actions em urls "mais interessantes" para os usu?rios e as configura??es de
+ambiente. Eu acho que seria poss?vel colocar as nossas configura??es aqui
+tamb?m, talvez dentro de uma sub-pasta, mas tem esse problema do usu?rio
+navagenado na estrutura de diret?rios de rails, mas este seria um problema
+tempor?rio, j? que a id?ia ? que o usu?rio possa configurar tudo a partir de
+uma interface web.
+
+On 2/20/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+>
+> Repassando e respondendo a mensagem de Marcos.
+>
+> On 2/20/06, Marcos Silva Pereira <marcos.silva at gmail.com> wrote:
+> > Apesar de achar Ruby interessante para fazer as configura??es, afinal,
+> nem
+> > parse fariamos, voto por YAML, ? proprio para configura??o e Ruby
+> oferece
+> > suporte default.
+>
+> Acabei me perdendo em minha pr?pria prolixia e esqueci de perguntar:
+> onde devem ficar esses arquivos de configura??o? O diret?rio config da
+> estrutura rails tem essa utilidade? Criamos nosso pr?prio diret?rio?
+> Onde?
+>
+> Caso resolvamos criar nosso pr?prio diret?rio, sugiro coloc?-lo fora
+> da ?rvore rails. ? f?cil para o usu?rio final se perder ali.
+>
+> Abra?o,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+
+
+--
+--
+
+Livar Correia de O. C. Cunha
+Qualiti Software Process
+
+--
+livar at qualiti.com.br
+lcocc at cin.ufpe.br
+livarcocc at gmail.com
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060221/e7230009/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Feb 21 19:16:45 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 21 Feb 2006 15:16:45 -0300
+Subject: [Motiro-devel-pt_br] Arquitetura Hexagonal
+Message-ID: <e163e2f50602211016y4c121a2dw319d11a0c88cd62c@mail.gmail.com>
+
+Pessoal,
+
+Voc?s est?o familiarizados com arquitetura hexagonal? Estou
+desenvolvendo o c?digo inicial do Motiro com base nela. Tem um artigo
+aqui, de Alistair Cockburn
+
+http://alistair.cockburn.us/crystal/articles/hpaaa/hexagonalportsandadaptersarchitecture.htm
+
+A id?ia ? ver a aplica??o como um n?cleo que disponibiliza portas ?s
+quais podem ser conectados adaptadores. Estas portas servem para
+aplica??o se comunicar com o mundo exterior. Um exemplo vai ilustrar
+isso muito bem. Gostaria de poder desenhar UML no e-mail, mas vai em
+Ruby mesmo.
+
+Temos aqui a classe SubversionConnection
+
+class SubversionConnection
+end
+
+Uma das responsabilidades dela ? se comunicar com o reposit?rio
+subversion remoto. Em seu estado atual, nossa classe
+SubversionConnection faz isso atrav?s da execu??o de um processo
+separado. Ela chama o programa 'svn' que deve estar dispon?vel no
+ambiente de execu??o do servidor. ? nesta comunica??o que entra a
+porta para o mundo exterior. Neste caso, chamei a porta de Runner
+(algo como executor de comandos, pensando bem agora, talvez possamos
+mudar o nome dela para CommandRunner).
+
+O que a classe SubversionConnection precisa fazer ? pedir para o
+Runner executar o comando referente ? chamada do programa `svn`. Ele,
+em troca, devolve para ela a sa?da do programa. Esse comportamento
+est? dentro do m?todo log.
+
+class SubversionConnection
+    def log
+        @runner.run "svn log svn://svn.berlios.de/motiro"
+    end
+end
+
+Na verdade, o m?todo real ? um pouco mais complicado que isso. Mas d?
+pra entender a id?ia. Quem estiver esfomeado mesmo por c?digo real
+pode dar uma olhada no nosso reposit?rio.
+
+O ganho mais ?bvio desta abordagem ? quando chega a hora de testar, o
+que no nosso caso de bons TDDeiros ? o tempo todo. Posso substituir o
+runner em tempo de execu??o, simplesmente passando-o ao criar os
+objetos da classe SubversionConnection. Assim posso 'mockar' o runner,
+substitu?-lo por um runner que n?o executa patavinas, apenas verifica
+o que lhe foi solicitado e retorna uma resposta padr?o.
+
+O que voc?s acham dessa abordagem?
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Tue Feb 21 20:42:31 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 21 Feb 2006 16:42:31 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Mo?= =?ISO-8859-1?Q?tiro-devel-pt=5Fbr]_Parametriza=E7=E3o?=
+In-Reply-To: <18ed3fc70602210413u193240ffo759b381a70b3c4a0@mail.gmail.com>
+References: <e163e2f50602201008g57f029d0icf0539d2de832af@mail.gmail.com>
+	 <c30322d0602201109q1c15e714r85de21fbeda20506@mail.gmail.com>
+	 <e163e2f50602201145o1f19e79eg6528afae27ad4163@mail.gmail.com>
+	 <18ed3fc70602210413u193240ffo759b381a70b3c4a0@mail.gmail.com>
+Message-ID: <e163e2f50602211142g21297560p9ead7bfd3b7b1bd9@mail.gmail.com>
+
+On 2/21/06, Livar Cunha <livarcocc at gmail.com> wrote:
+> Rails possui um diret?rio config no mesmo n?vel do diret?rio app, nele ficam
+> as informa??es de banco de dados, de routing, ou seja o mapeamento de
+> actions em urls "mais interessantes" para os usu?rios e as configura??es de
+> ambiente. Eu acho que seria poss?vel colocar as nossas configura??es aqui
+> tamb?m, talvez dentro de uma sub-pasta
+
+Ent?o vou criar o subversion.yml dentro de config/report. O que voc?s
+acham? Algum nome melhor para o diret?rio?
+
+Vamos em frente,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From livarcocc at gmail.com  Tue Feb 21 20:46:34 2006
+From: livarcocc at gmail.com (Livar Cunha)
+Date: Tue, 21 Feb 2006 16:46:34 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-devel-p?= =?ISO-8859-1?Q?t=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_Parametriza=E7=E3o?=
+In-Reply-To: <e163e2f50602211142g21297560p9ead7bfd3b7b1bd9@mail.gmail.com>
+References: <e163e2f50602201008g57f029d0icf0539d2de832af@mail.gmail.com>
+	 <c30322d0602201109q1c15e714r85de21fbeda20506@mail.gmail.com>
+	 <e163e2f50602201145o1f19e79eg6528afae27ad4163@mail.gmail.com>
+	 <18ed3fc70602210413u193240ffo759b381a70b3c4a0@mail.gmail.com>
+	 <e163e2f50602211142g21297560p9ead7bfd3b7b1bd9@mail.gmail.com>
+Message-ID: <18ed3fc70602211146u5aed05afp68d38faca4b3cd96@mail.gmail.com>
+
+Por mim t? ok.
+
+On 2/21/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+>
+> On 2/21/06, Livar Cunha <livarcocc at gmail.com> wrote:
+> > Rails possui um diret?rio config no mesmo n?vel do diret?rio app, nele
+> ficam
+> > as informa??es de banco de dados, de routing, ou seja o mapeamento de
+> > actions em urls "mais interessantes" para os usu?rios e as configura??es
+> de
+> > ambiente. Eu acho que seria poss?vel colocar as nossas configura??es
+> aqui
+> > tamb?m, talvez dentro de uma sub-pasta
+>
+> Ent?o vou criar o subversion.yml dentro de config/report. O que voc?s
+> acham? Algum nome melhor para o diret?rio?
+>
+> Vamos em frente,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+
+
+--
+--
+
+Livar Correia de O. C. Cunha
+Qualiti Software Process
+
+--
+livar at qualiti.com.br
+lcocc at cin.ufpe.br
+livarcocc at gmail.com
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060221/82082e91/attachment.html>
+
+From thiago.arrais at gmail.com  Tue Feb 21 20:50:30 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 21 Feb 2006 16:50:30 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Re:_[Motiro-devel-p?= =?ISO-8859-1?Q?t=5Fbr]_Re:_[Motiro-devel-pt=5Fbr]_Parametriza=E7=E3o?=
+In-Reply-To: <18ed3fc70602211146u5aed05afp68d38faca4b3cd96@mail.gmail.com>
+References: <e163e2f50602201008g57f029d0icf0539d2de832af@mail.gmail.com>
+	 <c30322d0602201109q1c15e714r85de21fbeda20506@mail.gmail.com>
+	 <e163e2f50602201145o1f19e79eg6528afae27ad4163@mail.gmail.com>
+	 <18ed3fc70602210413u193240ffo759b381a70b3c4a0@mail.gmail.com>
+	 <e163e2f50602211142g21297560p9ead7bfd3b7b1bd9@mail.gmail.com>
+	 <18ed3fc70602211146u5aed05afp68d38faca4b3cd96@mail.gmail.com>
+Message-ID: <e163e2f50602211150qd330b29rc23bfad2286f6879@mail.gmail.com>
+
+On 2/21/06, Livar Cunha <livarcocc at gmail.com> wrote:
+> On 2/21/06, Thiago Arrais <thiago.arrais at gmail.com> wrote:
+> > Ent?o vou criar o subversion.yml dentro de config/report. O que voc?s
+> > acham? Algum nome melhor para o diret?rio?
+>
+> Por mim t? ok.
+
+Algu?m j? viu algo parecido em algum outro projeto rails? Seria bom se
+verific?ssemos qual a pr?tica comum dentre os rubystas.
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+

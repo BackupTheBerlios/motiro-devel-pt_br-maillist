@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Javascript/XPath/CSS%20e%20os%20testes%20do%20Motiro&In-Reply-To=%3Cc30322d0604101422v4b847a93g6c495f2e272de21a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000027.html">
+   <LINK REL="Next"  HREF="000029.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro</H1>
+    <B>Marcos Silva Pereira</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Javascript/XPath/CSS%20e%20os%20testes%20do%20Motiro&In-Reply-To=%3Cc30322d0604101422v4b847a93g6c495f2e272de21a%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro">marcos.silva at gmail.com
+       </A><BR>
+    <I>Mon Apr 10 23:22:43 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000027.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+        <LI>Next message: <A HREF="000029.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#28">[ date ]</a>
+              <a href="thread.html#28">[ thread ]</a>
+              <a href="subject.html#28">[ subject ]</a>
+              <a href="author.html#28">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>A segunda &#233; mais complicada e menos intuitiva, n&#227;o conseguiria acompanhar
+sem uma explica&#231;&#227;o. D&#225; para fazer o XPath de maneira mais simples, Arrais,
+basta ajustar a consulta. D&#225; uma olhada no exemplo abaixo para ver como
+fazer isso:
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;
+   &quot; <A HREF="http://www.w3.org/TR/html4/loose.dtd">http://www.w3.org/TR/html4/loose.dtd</A>&quot;&gt;
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Motiro - XPath&lt;/title&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            function doXPath() {
+                var divs = akeys = document.evaluate(&quot;//img[contains(@src,
+'/images/rss.gif')]&quot;,
+                        document,
+                        null,
+                        XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
+                        null);
+
+                alert(divs.snapshotLength); // &#233; para mostrar 4
+            }
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body onload=&quot;javascript:doXPath();&quot;&gt;
+        &lt;img src=&quot;/images/rss.gif?321654564&quot; /&gt;
+        &lt;img src=&quot;/images/rss.gif?5463765676&quot; /&gt;
+        &lt;img src=&quot;/images/rss.gif?78678567&quot; /&gt;
+        &lt;img src=&quot;/images/rss.gif?890790&quot; /&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+
+Ou seja, n&#227;o tem starts_with, mas tem contains que j&#225; deve bastar.
+
+Abra&#231;o...
+
+On 4/10/06, Thiago Arrais &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">thiago.arrais at gmail.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Pessoal,
+</I>&gt;<i>
+</I>&gt;<i> Com a atualiza&#231;&#227;o do engine Rails para a vers&#227;o 1.1, alguns de nossos
+</I>&gt;<i> testes de aceita&#231;&#227;o passaram a falhar. Mas n&#227;o &#233; nada demais, j&#225;
+</I>&gt;<i> chequei as causas e tudo parece bem. O problema &#233; que nesta &#250;ltima
+</I>&gt;<i> vers&#227;o, a fun&#231;&#227;o image_tag (usada para gerar os tags img nas nossas
+</I>&gt;<i> p&#225;ginas) passou a incluir informa&#231;&#227;o de timestamp, para enganar o
+</I>&gt;<i> caching dos browsers e facilitar a vida do desenvolvedor.
+</I>&gt;<i>
+</I>&gt;<i> O problema &#233; que os testes estavam confiando no formato da tag src
+</I>&gt;<i> para verificar a p&#225;gina. T&#237;nhamos (ali&#225;s, ainda temos at&#233; alternativa
+</I>&gt;<i> melhor) nos nossos scripts de teste, algo como
+</I>&gt;<i>
+</I>&gt;<i> assertElementPresent &quot;//img[@src='/images/rss.gif']&quot;
+</I>&gt;<i>
+</I>&gt;<i> S&#243; que agora as imagens n&#227;o t&#234;m mais o atributo src='rss.gif' somente,
+</I>&gt;<i> ao inv&#233;s disso temos
+</I>&gt;<i>
+</I>&gt;<i> &lt;img src=&quot;/images/rss.gif?1142366545&quot; /&gt;
+</I>&gt;<i>
+</I>&gt;<i> O n&#250;mero no final vem &#233; do timestamp do arquivo. A p&#225;gina ainda
+</I>&gt;<i> aparece normalmente, s&#243; que os testes falham porque o atributo src nao
+</I>&gt;<i> est&#225; como esperado. Queria a opini&#227;o (e a ajuda) de voc&#234;s quanto a
+</I>&gt;<i> duas solu&#231;&#245;es que pensei.
+</I>&gt;<i>
+</I>&gt;<i> 1. Reajustar os testes, modificando o localizador em XPath
+</I>&gt;<i>
+</I>&gt;<i> Ao inv&#233;s de termos o script de teste com
+</I>&gt;<i>
+</I>&gt;<i> assertElementPresent &quot;//img[@src='/images/rss.gif']&quot;
+</I>&gt;<i>
+</I>&gt;<i> Ter&#237;amos algo do tipo
+</I>&gt;<i>
+</I>&gt;<i> assertElementPresent &quot;//img[@src.starts_wtih('/images/rss.gif')]&quot;
+</I>&gt;<i>
+</I>&gt;<i> Traduzindo: verifique se a pagina possui um elemento img cujo atributo
+</I>&gt;<i> src inicia com o prefixo '/images/rss.gif'. Mas este _n&#227;o_ &#233; um
+</I>&gt;<i> localizador XPath v&#225;lido e/ou o Selenium n&#227;o consegue interpret&#225;-lo. A
+</I>&gt;<i> maior difculdade desta abordagem &#233; aprender como dizer isso em XPath.
+</I>&gt;<i> Tem tamb&#233;m o problema do relaxamento do script de teste, mas acho
+</I>&gt;<i> dif&#237;cil o c&#243;digo quebrar _desse_ jeito.
+</I>&gt;<i>
+</I>&gt;<i> 2. T&#233;cnica CSS para substitui&#231;&#227;o de texto por imagem
+</I>&gt;<i>
+</I>&gt;<i> Aqui a p&#225;gina HTML gerada n&#227;o vai ter nenhuma diretiva img. Ao inv&#233;s
+</I>&gt;<i> disso, vamos marcar um peda&#231;o de texto para ser substitu&#237;do por uma
+</I>&gt;<i> imagem quando for aplicada a folha de estilos. Ao inv&#233;s do c&#243;digo html
+</I>&gt;<i> ser assim
+</I>&gt;<i>
+</I>&gt;<i> &lt;img src='/images/rss.gif /&gt;
+</I>&gt;<i>
+</I>&gt;<i> Vamos ter algo parecido com isso
+</I>&gt;<i>
+</I>&gt;<i> &lt;div class='rss-link'&gt;RSS&lt;span /&gt;&lt;/div&gt;
+</I>&gt;<i>
+</I>&gt;<i> Na(s) regra(s) para tratamento da classe rss-link, escondemos o texto
+</I>&gt;<i> e colocamos a imagem em seu lugar. Maiores detalhes nesse links:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://wellstyled.com/css-replace-text-by-image.html">http://wellstyled.com/css-replace-text-by-image.html</A>
+</I>&gt;<i> <A HREF="http://www.stopdesign.com/articles/replace_text/">http://www.stopdesign.com/articles/replace_text/</A>
+</I>&gt;<i>
+</I>&gt;<i> Esta &#233; a abordagem que implementei (revis&#227;o 142), n&#227;o porque eu tenha
+</I>&gt;<i> avaliado e achado melhor, mas porque foi a &#250;nica que consegui.
+</I>&gt;<i>
+</I>&gt;<i> O que voc&#234;s acham?
+</I>&gt;<i>
+</I>&gt;<i> Abra&#231;o,
+</I>&gt;<i>
+</I>&gt;<i> Thiago Arrais
+</I>&gt;<i> --
+</I>&gt;<i> Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+</I>&gt;<i> Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+</I>&gt;<i> tecnologia em geral
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Motiro-devel-pt_br mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">Motiro-devel-pt_br at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br</A>
+</I>&gt;<i>
+</I>
+
+
+--
+Marcos Silva Pereira
+recife - pe
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>
+<A HREF="http://blastemica.blogspot.com">http://blastemica.blogspot.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060410/d62ca582/attachment.html">https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060410/d62ca582/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000027.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+	<LI>Next message: <A HREF="000029.html">[Motiro-devel-pt_br] Javascript/XPath/CSS e os testes do Motiro
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#28">[ date ]</a>
+              <a href="thread.html#28">[ thread ]</a>
+              <a href="subject.html#28">[ subject ]</a>
+              <a href="author.html#28">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

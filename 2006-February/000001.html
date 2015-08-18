@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Coisas das quais me arrependo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Coisas%20das%20quais%20me%20arrependo&In-Reply-To=%3Ce163e2f50602170909u7dde1223j120cf89821475b57%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000000.html">
+   <LINK REL="Next"  HREF="000002.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Coisas das quais me arrependo</H1>
+    <B>Thiago Arrais</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20Coisas%20das%20quais%20me%20arrependo&In-Reply-To=%3Ce163e2f50602170909u7dde1223j120cf89821475b57%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Coisas das quais me arrependo">thiago.arrais at gmail.com
+       </A><BR>
+    <I>Fri Feb 17 18:09:02 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000000.html">[Motiro-devel-pt_br] (no subject)
+</A></li>
+        <LI>Next message: <A HREF="000002.html">[Motiro-devel-pt_br] Coisas das quais me arrependo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Pessoal,
+
+Finalmente consegui fazer aquele primeiro teste para o reporter de
+Subversion falhar decemente (sim, falhar decentemente &#233; progresso :-).
+Mas tenho que confessar que fiz algumas coisas das quais me arrependo.
+S&#227;o coisas as quais tenho experi&#234;ncia suficiente para saber que n&#227;o
+est&#227;o ruins, mas que n&#227;o tenho experi&#234;ncia necess&#225;ria para saber como
+deix&#225;-las boas. Seria bom se algu&#233;m pudesse ma ajudar a melhor&#225;-las.
+
+O primeiro problema est&#225; no arquivo de teste (em
+src/test/unit/svn_reporter_test.rb Logo no come&#231;o podemos ver as
+seguintes linhas
+
+$:.push File.expand_path(File.dirname(__FILE__) + '/..')
+$:.push File.expand_path(File.dirname(__FILE__) + '/../../app')
+
+Esquisito? Tamb&#233;m achei. Mas vou explic&#225;-las (ou pelo menos tentar). A
+vari&#225;vel &quot;$:&quot; &#233; uma lista de nomes de diret&#243;rios, &#233; nela que o motor
+ruby vai procurar os arquivos quando voc&#234; diz algo como &quot;require
+'test/uni'&quot;. O que estas duas linhas est&#227;o fazendo &#233; adicionar o
+diret&#243;rio src/test e src/app a essa lista, utilizando endere&#231;os
+relativos &#224; localizacao do arquivo svn_reporter_test.rb Isto nos
+permite escrever mais abaixo as seguintes linhas
+
+require 'stubs/svn_connection'
+require 'reporters/svn_reporter'
+
+Assim ficamos livres de deixar as linhas do require esquisitas. Al&#233;m
+disso poderemos, no futuro, mover essas linhas da $: para algum outro
+arquivo fonte e utiliz&#225;-lo para todos os teste. As linhas require
+ficam limpas em todos os arquivos se fizermos isso. Isso &#233; bom, por&#233;m
+achei meio for&#231;ada de barra o que eu fiz. Talvez ruby ou rails
+permitam um formato menos cr&#237;ptogr&#225;fico, mas minha ignor&#226;ncia
+rubystica ainda n&#227;o o conhece.
+
+O segundo problema est&#225; no arquivo src/app/reporters/svn_reporter.rb
+Este arquivo abriga a classe que estou querendo escrever para passar
+no meu teste. Se voc&#234;s abrirem o arquivo poder&#227;o ver que h&#225;, al&#233;m da
+classe 'dona' do arquivo (a SubversionReporter), outra classe chamada
+Headline. N&#227;o joguem as pedras em mim ainda! Eu coloquei a classe no
+mesmo arquivo porque acho que Headline vai fazer parte do nosso
+modelo, ou seja, vai ficar dentro do diret&#243;rio model. S&#243; que minha
+santa ignor&#226;ncia em rails deduziu que s&#243; &#233; poss&#237;vel adicionar uma
+classe ao modelo quando h&#225; acesso a um banco de dados. O problema &#233;
+que eu n&#227;o queria introduzir o acesso a banco de dados ainda. Podemos
+mover a classe para o model manualmente (sem cri&#225;-la atrav&#233;s do script
+generate)? Isso n&#227;o vai nos dar alguns problemas de incompatibilidade
+no futuro, quando come&#231;armos a gerar os models?
+
+Com o terceiro e &#250;ltimo problema eu n&#227;o estou muito preocupado,
+confesso. Mas acho que h&#225; algum jeito mais r&#250;byco de escrever o c&#243;digo
+(utilizando mixins para deixar a coisa mais bonita ou sei l&#225;). Este
+problema est&#225; em src/test/stubs/svn_connection.rb.
+
+Este arquivo define uma class StubSVNConnection, um substituto de
+testes para a classe de verdade SVNConnection. A conex&#227;o stub responde
+com a sa&#237;da com que foi instru&#237;da a responder, atrav&#233;s do m&#233;todo
+log_append_text. No final, ela s&#243; precisa definir este m&#233;todo e
+sobrescrever o m&#233;todo read_log da classe SVNConnection (que ainda n&#227;o
+existe e, na verdade, n&#227;o sei nem se o nome vai ser esse mesmo). Claro
+que posso fazer isso atrav&#233;s da boa e velha heran&#231;a. Queria saber se
+h&#225; outras sugest&#245;es, se h&#225; alguma express&#227;o idiom&#225;tica em ruby que
+resolva isso.
+
+Abra&#231;o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000000.html">[Motiro-devel-pt_br] (no subject)
+</A></li>
+	<LI>Next message: <A HREF="000002.html">[Motiro-devel-pt_br] Coisas das quais me arrependo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

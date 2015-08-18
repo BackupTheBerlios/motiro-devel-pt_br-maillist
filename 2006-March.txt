@@ -1,0 +1,138 @@
+From thiago.arrais at gmail.com  Wed Mar 22 12:53:35 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Wed, 22 Mar 2006 08:53:35 -0300
+Subject: [Motiro-devel-pt_br] Mostrando diffs
+Message-ID: <e163e2f50603220353w3492a50dlb8485e4c237e753a@mail.gmail.com>
+
+Pessoal,
+
+N?o sei se voc?s j? viram, mas ontem eu comecei a implementar o
+detalhamento das not?cias do reposit?rio Subversion. Por enq?anto de
+detalhemento mesmo a coisa s? mostra o coment?rio da altera??o
+completo. Para demonstrar a funcionalidade, aproveitei e coloquei uma
+mensagem semi-quilometrica no commit que adiciona esta capacidade.
+Como sempre, o resultado pode ser conferido em
+
+http://thiagoarrais.no-ip.org:3000/
+
+(Escolham a revis?o 'Agora mostrando o comentario da alteracao completo')
+
+Eu sei que ? pouco, mas pera? estamos s? come?ando esse neg?cio. O
+pr?ximo passo ? mostrar a lista de arquivos modificados para cada
+altera??o e o pr?ximo ? mostrar as altera??es em si (que linhas foram
+modificadas em cada arquivo). Muito provavelmente nesta vers?o inicial
+vou mostrar somente a sa?da do `svn diff' crua. Mas eu gostaria de
+mostrar algo bonitinho como o Trac faz. Por exemplo, d?em uma olhada
+aqui.
+
+http://projects.edgewall.com/trac/changeset/3027
+
+Eu quero algo nessa linha, mas gostaria que a vers?o anterior e a nova
+vers?o do arquivo sejam mostradas lado a lado com uma liga??o entre as
+modifica??es, como o Eclipse faz (tentem 'Compare to... > Base
+revision para saber do que estou falando).
+
+Alguma id?ia antes que eu comece a me embrenhar no c?digo do Trac e do Eclipse?
+
+Abra?o,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From thiago.arrais at gmail.com  Tue Mar 28 14:12:26 2006
+From: thiago.arrais at gmail.com (Thiago Arrais)
+Date: Tue, 28 Mar 2006 09:12:26 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Lan=E7ado_Rails_1.1?=
+Message-ID: <e163e2f50603280412l7765175aya3f719dd2d47dad6@mail.gmail.com>
+
+Pessoal,
+
+Talvez alguns de voc?s j? saibam mas achei que deveria alertar aqueles
+que n?o sabem ainda. O framework Ruby on Rails que estamos usando no
+Motiro est? chegando ? vers?o 1.1. Este release vem com v?rias novas
+fun??es interessantes. Mais alguns detalhes aqui:
+
+http://weblog.rubyonrails.org/articles/2006/03/28/rails-1-1-rjs-active-record-respond_to-integration-tests-and-500-other-things
+
+Fiquei bem interessado pelo tal RJS. Acho que ele resolve (pelo menos
+em parte) uma das coisas que j? andei conversando com Marcos: gerar
+c?digo JavaScript a partir de Ruby. ? o que mais me impressionou at?
+agora.
+
+Bom, olhem o post do David, tirem suas pr?prias conclus?es e comentem.
+
+Abra?os,
+
+Thiago Arrais
+--
+Mergulhando no Caos - http://thiagoarrais.blogspot.com
+Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+tecnologia em geral
+
+
+From marcos.silva at gmail.com  Thu Mar 30 22:07:19 2006
+From: marcos.silva at gmail.com (Marcos Silva Pereira)
+Date: Thu, 30 Mar 2006 17:07:19 -0300
+Subject: [Motiro-devel-pt_br] =?ISO-8859-1?Q?Re:_[Motiro-devel-pt=5Fbr]_Lan=E7ado_Rails_1.1?=
+In-Reply-To: <e163e2f50603280412l7765175aya3f719dd2d47dad6@mail.gmail.com>
+References: <e163e2f50603280412l7765175aya3f719dd2d47dad6@mail.gmail.com>
+Message-ID: <c30322d0603301207q328e69m9d1b06d4db11d516@mail.gmail.com>
+
+N?o sabia do novo release, esses dias n?o tive tempo para acompanhar.
+
+O framework Ruby on Rails que estamos usando no
+> Motiro est? chegando ? vers?o 1.1. Este release vem com v?rias novas
+> fun??es interessantes.
+
+
+S? uma coisa a dizer:
+gem update --include-dependencies
+
+:-D
+
+Mais alguns detalhes aqui:
+>
+>
+> http://weblog.rubyonrails.org/articles/2006/03/28/rails-1-1-rjs-active-record-respond_to-integration-tests-and-500-other-things
+
+
+Hum, leitura recomendada, vou dar uma sacada.
+
+Fiquei bem interessado pelo tal RJS. Acho que ele resolve (pelo menos
+> em parte) uma das coisas que j? andei conversando com Marcos: gerar
+> c?digo JavaScript a partir de Ruby. ? o que mais me impressionou at?
+> agora.
+
+
+Caraca, como a galera ? rapida. Isso prova como RoR est? bem vivo e ativo.
+
+Bom, olhem o post do David, tirem suas pr?prias conclus?es e comentem.
+>
+> Abra?os,
+>
+> Thiago Arrais
+> --
+> Mergulhando no Caos - http://thiagoarrais.blogspot.com
+> Pensamentos, id?ias e devaneios sobre desenvolvimento de software e
+> tecnologia em geral
+> _______________________________________________
+> Motiro-devel-pt_br mailing list
+> Motiro-devel-pt_br at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+>
+
+valeuz...
+
+--
+Marcos Silva Pereira
+recife - pe
+marcos.silva at gmail.com
+http://blastemica.blogspot.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060330/f4d2a890/attachment.html>
+

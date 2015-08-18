@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BMotiro-devel-pt%3D5Fbr%5D_Re%3A_%5BMo%3F%3D%20%3D%3FISO-8859-1%3FQ%3Ftiro-devel-pt%3D5Fbr%5D_Re%3A_%5BMotiro-de%3F%3D%20%3D%3FISO-8859-1%3FQ%3Fvel-pt%3D5Fbr%5D_Javascript_-_Mostrand%3F%3D%20%3D%3FISO-8859-1%3FQ%3Fo_apenas_altera%3DE7%3DF5es_selecionadas%3F%3D&In-Reply-To=%3Cc30322d0604041049k5579d010td0fe0d425a1ca0bf%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000020.html">
+   <LINK REL="Next"  HREF="000022.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas</H1>
+    <B>Marcos Silva Pereira</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BMotiro-devel-pt%3D5Fbr%5D_Re%3A_%5BMo%3F%3D%20%3D%3FISO-8859-1%3FQ%3Ftiro-devel-pt%3D5Fbr%5D_Re%3A_%5BMotiro-de%3F%3D%20%3D%3FISO-8859-1%3FQ%3Fvel-pt%3D5Fbr%5D_Javascript_-_Mostrand%3F%3D%20%3D%3FISO-8859-1%3FQ%3Fo_apenas_altera%3DE7%3DF5es_selecionadas%3F%3D&In-Reply-To=%3Cc30322d0604041049k5579d010td0fe0d425a1ca0bf%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas">marcos.silva at gmail.com
+       </A><BR>
+    <I>Tue Apr  4 19:49:24 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000020.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+        <LI>Next message: <A HREF="000022.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sim, d&#225; para fazer isso sem problemas. Assim:
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;
+    &quot;<A HREF="http://www.w3.org/TR/html4/loose.dtd">http://www.w3.org/TR/html4/loose.dtd</A>&quot;&gt;
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Motiro - JavaScript&lt;/title&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            function alteraConteudo(divId) {
+                var div = document.getElementById(divId);
+                if(div) {
+                   div.innerHTML = &quot;&lt;p&gt;Eis o novo texto da div&lt;\/p&gt;&quot;;
+                }
+            }
+        &lt;/script&gt;
+    &lt;/head&gt;
+
+    &lt;h4 onclick=&quot;javascript:alteraConteudo('div1');&quot;&gt;Titulo 1&lt;/h4&gt;
+    &lt;div id=&quot;div1&quot;&gt;&lt;p&gt;Texto a ser mostrado 1&lt;/p&gt;&lt;/div&gt;
+
+&lt;/html&gt;
+
+D&#225; para sair adicionando childs na arvore DOM da div tambem, mas acho o
+innerHTML mais pratico, ao menos para esse caso.
+
+valeuz...
+
+On 4/4/06, Thiago Arrais &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">thiago.arrais at gmail.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> On 4/4/06, Marcos Silva Pereira &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Substituir uma div por outra que _n&#227;o_ existe
+</I>&gt;<i>
+</I>&gt;<i> &gt; O que Ajax faz &#233; requisitar ao servidor os dados e
+</I>&gt;<i> &gt; montar a arvore DOM para inseri-la em alguma parte da pagina.
+</I>&gt;<i>
+</I>&gt;<i> Substituir uma div por outra n&#227;o seria o mesmo de inserir uma arvore
+</I>&gt;<i> DOM em uma parte da pagina? Estamos especulando aqui (j&#225; que nosso
+</I>&gt;<i> problema deve ser resolvido usando o style.display), mas n&#227;o seria
+</I>&gt;<i> poss&#237;vel ter algo do tipo:
+</I>&gt;<i>
+</I>&gt;<i> &lt;head&gt;
+</I>&gt;<i> &lt;script language='arraiscript'&gt;
+</I>&gt;<i> substitua o div com id='guarda_lugar' pelo n&#243; html abaixo
+</I>&gt;<i> &quot;&lt;div id='guarda_lugar'&gt;&lt;p&gt;Este par&#225;grafo aparece do nada&lt;/p&gt;&lt;/div&gt;&quot;
+</I>&gt;<i> &lt;/script&gt;
+</I>&gt;<i> &lt;/head&gt;
+</I>&gt;<i> &lt;body&gt;
+</I>&gt;<i> &lt;p&gt;Este paragrafo &#233; fixo&lt;/p&gt;
+</I>&gt;<i> &lt;div id=&quot;guarda_lugar&quot; /&gt;
+</I>&gt;<i> &lt;/body&gt;
+</I>&gt;<i>
+</I>&gt;<i> N&#227;o coloquei o gatilho (botao/link/qquer coisa) para disparar o
+</I>&gt;<i> script, mas acho que d&#225; pra entender. N&#227;o &#233; isso que acontece quando &#233;
+</I>&gt;<i> feita uma requisi&#231;&#227;o AJAX, com a diferen&#231;a de que os dados viriam do
+</I>&gt;<i> servidor?
+</I>&gt;<i>
+</I>&gt;<i> Abra&#231;o,
+</I>&gt;<i>
+</I>&gt;<i> Thiago Arrais
+</I>&gt;<i> --
+</I>&gt;<i> Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+</I>&gt;<i> Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+</I>&gt;<i> tecnologia em geral
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Motiro-devel-pt_br mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">Motiro-devel-pt_br at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br</A>
+</I>&gt;<i>
+</I>
+
+
+--
+Marcos Silva Pereira
+recife - pe
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">marcos.silva at gmail.com</A>
+<A HREF="http://blastemica.blogspot.com">http://blastemica.blogspot.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/2e9a73aa/attachment.html">https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/2e9a73aa/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000020.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+	<LI>Next message: <A HREF="000022.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>

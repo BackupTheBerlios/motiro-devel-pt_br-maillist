@@ -1,0 +1,9 @@
+From infoemail at bradesco.com  Thu Jul  9 00:01:03 2009
+From: infoemail at bradesco.com (Bradesco Internet Banking)
+Date: Wed,  8 Jul 2009 22:01:03 +0000 (UTC)
+Subject: Segurança no Bradesco Internet Banking
+Message-ID: <20090708220104.0B1CA10000172@montmartre.tpn.terra.com>
+
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20090708/bdcd8025/attachment.html>
+

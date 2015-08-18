@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/motiro-devel-pt_br/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BMotiro-devel-pt%3D5Fbr%5D_Re%3A_%5BMotiro-devel-pt%3D5Fbr%5D_J%3F%3D%20%3D%3FISO-8859-1%3FQ%3Favascript_-_Mostrando_apenas_altera%3DE7%3DF5es_selecionadas%3F%3D&In-Reply-To=%3C18ed3fc70604041352r277f0078l6534d53039d29f87%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000024.html">
+   <LINK REL="Next"  HREF="000026.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas</H1>
+    <B>Livar Cunha</B> 
+    <A HREF="mailto:motiro-devel-pt_br%40lists.berlios.de?Subject=Re%3A%20%5BMotiro-devel-pt_br%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BMotiro-devel-pt%3D5Fbr%5D_Re%3A_%5BMotiro-devel-pt%3D5Fbr%5D_J%3F%3D%20%3D%3FISO-8859-1%3FQ%3Favascript_-_Mostrando_apenas_altera%3DE7%3DF5es_selecionadas%3F%3D&In-Reply-To=%3C18ed3fc70604041352r277f0078l6534d53039d29f87%40mail.gmail.com%3E"
+       TITLE="[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas">livarcocc at gmail.com
+       </A><BR>
+    <I>Tue Apr  4 22:52:52 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000024.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+        <LI>Next message: <A HREF="000026.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#25">[ date ]</a>
+              <a href="thread.html#25">[ thread ]</a>
+              <a href="subject.html#25">[ subject ]</a>
+              <a href="author.html#25">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sobre essa quest&#227;o de esconder o detalhe e tal... tem algum problema em usar
+ajax??
+
+Se n&#227;o tiver, pode usar slidedow, o c&#243;digo &#233; o abaixo
+
+&lt;p&gt;&lt;a href=&quot;#&quot; onclick=&quot;new Effect.SlideDown('source'); return
+false;&quot;&gt;View source&lt;/a&gt;&lt;/p&gt;
+&lt;pre id=&quot;source&quot; style=&quot;display:none;&quot;&gt;&lt;code&gt;
+# view
+Just a little test:
+&lt;%= text_field_with_auto_complete :contact, :name %&gt;
+
+# controller
+auto_complete_for :contact, :name
+&lt;/code&gt;&lt;/pre&gt;
+
+no caso tudo que est&#225; dentro do pre aparece e some da p&#225;gina.
+Isso usa uma tecnologia de scripts ajax que j&#225; vem em rails,
+script.aculo.us procurem no google e v&#227;o na p&#225;gina de demo,
+l&#225; tem um link, view source que &#233; exatamente esse recurso,
+v&#234; se &#233; isso que tu queres thiago.
+
+
+
+
+On 4/4/06, Thiago Arrais &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">thiago.arrais at gmail.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Acho que vou com a primeira sugest&#227;o mesmo.
+</I>&gt;<i>
+</I>&gt;<i> Devo publicar um pequeno planejamento para o pr&#243;ximo release hoje &#224;
+</I>&gt;<i> noite. Isto do rep&#243;rter subversion esconder o detalhamento dos
+</I>&gt;<i> arquivos deve entrar na pr&#243;xima vers&#227;o, junto com outras melhorias em
+</I>&gt;<i> termos de interface com o usu&#225;rio. Estou querendo dar uma perfumada no
+</I>&gt;<i> Motiro para este release 0.3 (que n&#227;o sei nem se vai ser 0.3, posso
+</I>&gt;<i> resolver chamar de 0.2.1).
+</I>&gt;<i>
+</I>&gt;<i> Podemos fazer uma reuni&#227;o para discutir o direcionamento do projeto
+</I>&gt;<i> ainda esse semana se voc&#234;s quiserem. Ultimamente estive pensando muito
+</I>&gt;<i> no aspecto de comunidade da coisa. Talvez mais conte&#250;do adicionado ou
+</I>&gt;<i> controlado por usu&#225;rios seja uma boa. Estou falando de coisas como
+</I>&gt;<i> tags e sistemas de votacao. Mas ainda estou com um p&#233; atr&#225;s antes de
+</I>&gt;<i> implementar estas coisas por causa do tamanho limitado da nossa
+</I>&gt;<i> comunidade. Por&#233;m, se a coisa for moleza de se fazer, podemos adotar
+</I>&gt;<i> uma postura mais coloca-l&#225;-pra-ver-no-que-d&#225;.
+</I>&gt;<i>
+</I>&gt;<i> Abra&#231;os,
+</I>&gt;<i>
+</I>&gt;<i> Thiago Arrais
+</I>&gt;<i> --
+</I>&gt;<i> Mergulhando no Caos - <A HREF="http://thiagoarrais.blogspot.com">http://thiagoarrais.blogspot.com</A>
+</I>&gt;<i> Pensamentos, id&#233;ias e devaneios sobre desenvolvimento de software e
+</I>&gt;<i> tecnologia em geral
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Motiro-devel-pt_br mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">Motiro-devel-pt_br at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br</A>
+</I>&gt;<i>
+</I>
+
+
+--
+--
+
+Livar Correia de O. C. Cunha
+Qualiti Software Process
+
+--
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">livar at qualiti.com.br</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">lcocc at cin.ufpe.br</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">livarcocc at gmail.com</A>
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/38840650/attachment.html">https://lists.berlios.de/pipermail/motiro-devel-pt_br/attachments/20060404/38840650/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000024.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+	<LI>Next message: <A HREF="000026.html">[Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Re: [Motiro-devel-pt_br] Javascript - Mostrando apenas altera&#231;&#245;es selecionadas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#25">[ date ]</a>
+              <a href="thread.html#25">[ thread ]</a>
+              <a href="subject.html#25">[ subject ]</a>
+              <a href="author.html#25">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br">More information about the Motiro-devel-pt_br
+mailing list</a><br>
+</body></html>
